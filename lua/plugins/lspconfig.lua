@@ -1,7 +1,6 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "saghen/blink.cmp" },
     opts = function()
       ---@class PluginLspOpts
       local ret = {

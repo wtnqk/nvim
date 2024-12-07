@@ -3,3 +3,4 @@
 -- Add any additional options here
 vim.o.relativenumber = false
 vim.g.lazyvim_php_lsp = "intelephense"
+vim.o.winbar = "%{%v:lua.require'nvim-navic'.get_location()%}"
