@@ -1,14 +1,4 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
-end
-vim.opt.rtp:prepend(lazypath)
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
 
-require("config").setup(require("config.lazy"))-- bootstrap lazy.nvim, LazyVim and your plugins
+vim.opt.clipboard:append("unnamedplus")
