@@ -51,5 +51,5 @@ require("lazy").setup({
   },
 })
 
-require("require.intelephense")
-require("require.typos")
+-- require("require.intelephense")
+-- require("require.typos")
