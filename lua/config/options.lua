@@ -1,23 +1,75 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-vim.g.lazyvim_blink_main = true
--- カーソル行を強調
-vim.api.nvim_win_set_option(0, "cursorline", true)
--- 標識のためのスペースを最左列に設ける
-vim.api.nvim_win_set_option(0, "signcolumn", "yes:1")
--- テキストの折り返しを無効化
-vim.api.nvim_win_set_option(0, "wrap", false)
--- 非表示文字の可視化
-vim.api.nvim_win_set_option(0, "list", true)
--- 指定したカラム列を強調
--- vim.api.nvim_win_set_option(0, 'colorcolumn', '100')
+local ftadd = vim.filetype.add
+local g, opt = vim.g, vim.opt
 
--- 相対行番号を無効化
-vim.o.relativenumber = false
--- PHPのLSPをIntelephenseに設定
-vim.g.lazyvim_php_lsp = "intelephense"
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
--- フォーマットを自動適用しない
-vim.g.format_on_save = false
-vim.g.lazyvim_picker = "snacks"
+g.mapleader = " "
+g.maplocalleader = "\\"
+g.markdown_recommended_style = 0
+
+g.autoformat = false
+g.ai_cmp = true
+
+g.root_spec = { "lsp", { ".git", "lua", ".svn" }, "cwd" }
+g.root_lsp_ignore = { "copilot" }
+
+opt.autowrite = true
+opt.clipboard = vim.env.SSH_TTY and "" or "unnamedplus"
+opt.colorcolumn = "120"
+opt.conceallevel = 3
+opt.confirm = true
+opt.cursorline = true
+opt.expandtab = true
+opt.fileencodings = { "ucs-bom", "utf-8", "iso-2022-jp", "cp932", "euc-jp", "latin1" }
+opt.fileformats = { "unix", "dos", "mac" }
+opt.fillchars = {
+  fold = " ",
+  foldclose = ">",
+  foldopen = "v",
+  foldsep = " ",
+}
+opt.foldcolumn = "1"
+opt.foldenable = true
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.formatexpr = "v:lua.require'util'.format.formatexpr()"
+opt.formatoptions = "jcqlnt"
+opt.grepformat = "%f:%l:%c:%m"
+opt.grepprg = "rg --vimgrep"
+opt.ignorecase = true
+opt.laststatus = 3
+opt.list = true
+opt.mouse = "a"
+opt.number = true
+opt.pumblend = 10
+opt.pumheight = 10
+opt.relativenumber = false
+opt.scrolloff = 4
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
+opt.shiftround = true
+opt.shiftwidth = 0
+opt.shortmess:append({ W = true, I = true, c = true, C = true })
+opt.showcmdloc = "statusline"
+opt.showmode = false
+opt.sidescrolloff = 8
+opt.signcolumn = "yes"
+opt.smartcase = true
+opt.smartindent = true
+opt.softtabstop = -1
+opt.spelllang = { "en" }
+opt.splitbelow = true
+opt.splitkeep = "screen"
+opt.splitright = true
+opt.tabstop = 2
+opt.termguicolors = true
+opt.textwidth = 0
+opt.timeoutlen = 300
+opt.undofile = true
+opt.undolevels = 10000
+opt.updatetime = 4000
+opt.wildignorecase = true
+opt.wildmode = "longest:full,full"
+opt.winminwidth = 5
+opt.wrap = false
+
+ftadd({ extension = { aspx = "html" } })
