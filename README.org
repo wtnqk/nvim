@@ -262,17 +262,17 @@
    
    | Key        | Description      |
    |------------+------------------|
-   | ~i(~ / ~a(~| Parentheses      |
-   | ~i[~ / ~a[~| Brackets         |
-   | ~i{~ / ~a{~| Curly braces     |
-   | ~i<~ / ~a<~| Angle brackets   |
-   | ~i"~ / ~a"~| Double quotes    |
-   | ~i'~ / ~a'~| Single quotes    |
-   | ~i`~ / ~a`~| Backticks        |
-   | ~if~ / ~af~| Function         |
-   | ~ic~ / ~ac~| Class            |
-   | ~ia~ / ~aa~| Argument         |
-   | ~ii~ / ~ai~| Indent           |
+   | ~i(~ / ~a(~ | Parentheses      |
+   | ~i[~ / ~a[~ | Brackets         |
+   | ~i{~ / ~a{~ | Curly braces     |
+   | ~i<~ / ~a<~ | Angle brackets   |
+   | ~i"~ / ~a"~ | Double quotes    |
+   | ~i'~ / ~a'~ | Single quotes    |
+   | ~i`~ / ~a`~ | Backticks        |
+   | ~if~ / ~af~ | Function         |
+   | ~ic~ / ~ac~ | Class            |
+   | ~ia~ / ~aa~ | Argument         |
+   | ~ii~ / ~ai~ | Indent           |
 
 ** mini.align
    Align text
