@@ -168,11 +168,11 @@
 ** mini.ai
    Extended text objects
    - Text objects:
-     - ~i~/~a~ + ~(~, ~[~, ~{~, ~<~, ~"~, ~'~, ~`~ - Brackets/quotes
-     - ~if~/~af~ - Function
-     - ~ic~/~ac~ - Class
-     - ~ia~/~aa~ - Argument
-     - ~ii~/~ai~ - Indent
+     - ~i~ / ~a~ + ~(~ , ~[~ , ~{~ , ~<~ , ~"~ , ~'~ , ~`~ - Brackets/quotes
+     - ~if~ / ~af~ - Function
+     - ~ic~ / ~ac~ - Class
+     - ~ia~ / ~aa~ - Argument
+     - ~ii~ / ~ai~ - Indent
 
 ** mini.align
    Align text
@@ -354,7 +354,7 @@
 
 ** Markdown
    - render-markdown.nvim - Preview in buffer
-   - markdown-preview.nvim - Browser preview (~<Leader>cp~)
+   - markdown-preview.nvim - Browser preview ( ~<Leader>cp~ )
 
 ** Git
    - lazygit.nvim - Terminal UI for git
@@ -370,7 +370,7 @@
      - ~ct~ - Choose theirs
      - ~c0~ - Choose none
      - ~cb~ - Choose both
-     - ~]x~/~[x~ - Next/prev conflict
+     - ~]x~ / ~[x~ - Next/prev conflict
    - committia.vim - Better commit interface
    - blame.nvim - Git blame viewer
      - ~<Leader>gb~ - Toggle git blame
@@ -434,9 +434,9 @@
    - ~<Leader>bD~ - Delete buffer and window
 
 ** Diagnostics
-   - ~]d~/~[d~ - Next/prev diagnostic
-   - ~]e~/~[e~ - Next/prev error
-   - ~]w~/~[w~ - Next/prev warning
+   - ~]d~ / ~[d~ - Next/prev diagnostic
+   - ~]e~ / ~[e~ - Next/prev error
+   - ~]w~ / ~[w~ - Next/prev warning
    - ~<Leader>cd~ - Line diagnostics
 
 ** File Operations
@@ -488,7 +488,7 @@
    - ~gcO~ - Add comment above
    - ~<Leader>K~ - Keywordprg (documentation)
    - ~<Leader>ur~ - Redraw / clear hlsearch / diff update
-   - ~n~/~N~ - Better n and N with centered view
+   - ~n~ / ~N~ - Better n and N with centered view
    - ~<Leader>ui~ - Inspect position
    - ~<Leader>uI~ - Inspect tree
    - ~<Leader>fn~ - New file
