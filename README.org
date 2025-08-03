@@ -5,18 +5,106 @@
 
 * Plugin Manager
 ** lazy.nvim
-   - Package manager for Neovim
+   Package manager for Neovim
    - Bootstrap: Automatically installed on first run
-   - Keybinding: ~<Leader>l~ - Open Lazy UI
+   
+   | Key         | Description       |
+   |-------------+-------------------|
+   | ~<Leader>l~ | Open Lazy UI      |
+   | ~<Leader>L~ | Lazy changelog    |
 
 * Core Utilities
 ** snacks.nvim
-   Modern Neovim utilities collection
-   - Keybindings:
-     - ~<Leader>.~ - Toggle scratch buffer
-     - ~<Leader>S~ - Select scratch buffer
-     - ~<Leader>n~ - Show notification history
-     - ~<Leader>un~ - Dismiss all notifications
+   Modern Neovim utilities collection - Provides picker, notifier, toggle, bufdelete and more
+   
+   *** Core Features
+   | Key          | Description               |
+   |--------------+---------------------------|
+   | ~<Leader>.~  | Toggle scratch buffer     |
+   | ~<Leader>S~  | Select scratch buffer     |
+   | ~<Leader>n~  | Show notification history |
+   | ~<Leader>un~ | Dismiss all notifications |
+   
+   *** Picker (File/Buffer/Search)
+   | Key                | Description                     |
+   |--------------------+---------------------------------|
+   | ~<Leader>,~        | Buffers                         |
+   | ~<Leader>/~        | Grep (root)                     |
+   | ~<Leader>:~        | Command history                 |
+   | ~<Leader><Space>~  | Find files (root)               |
+   | ~<Leader>fb~       | Buffers                         |
+   | ~<Leader>fB~       | All buffers                     |
+   | ~<Leader>fc~       | Config files                    |
+   | ~<Leader>ff~       | Find files (root)               |
+   | ~<Leader>fF~       | Find files (cwd)                |
+   | ~<Leader>fg~       | Git files                       |
+   | ~<Leader>fr~       | Recent files                    |
+   | ~<Leader>fR~       | Recent files (cwd)              |
+   | ~<Leader>fp~       | Projects                        |
+   
+   *** Git Pickers
+   | Key          | Description        |
+   |--------------+--------------------|
+   | ~<Leader>gc~ | Git commits        |
+   | ~<Leader>gd~ | Git diff           |
+   | ~<Leader>gs~ | Git status         |
+   | ~<Leader>gS~ | Git stash          |
+   
+   *** Search Pickers
+   | Key          | Description              |
+   |--------------+--------------------------|
+   | ~<Leader>sb~ | Buffer lines             |
+   | ~<Leader>sB~ | Grep buffers             |
+   | ~<Leader>sg~ | Grep (root)              |
+   | ~<Leader>sG~ | Grep (cwd)               |
+   | ~<Leader>sl~ | Lazy plugins             |
+   | ~<Leader>sw~ | Word (root)              |
+   | ~<Leader>sW~ | Word (cwd)               |
+   | ~<Leader>s"~ | Registers                |
+   | ~<Leader>s/~ | Search history           |
+   
+   *** System Pickers
+   | Key          | Description              |
+   |--------------+--------------------------|
+   | ~<Leader>sa~ | Auto commands            |
+   | ~<Leader>sc~ | Command history          |
+   | ~<Leader>sC~ | Commands                 |
+   | ~<Leader>sd~ | Diagnostics              |
+   | ~<Leader>sD~ | Diagnostics (buffer)     |
+   | ~<Leader>sh~ | Help pages               |
+   | ~<Leader>sH~ | Highlights               |
+   | ~<Leader>si~ | Icons                    |
+   | ~<Leader>sj~ | Jumps                    |
+   | ~<Leader>sk~ | Keymaps                  |
+   | ~<Leader>sl~ | Location list            |
+   | ~<Leader>sm~ | Man pages                |
+   | ~<Leader>sM~ | Marks                    |
+   | ~<Leader>sR~ | Resume picker            |
+   | ~<Leader>sq~ | Quickfix                 |
+   | ~<Leader>su~ | Undo history             |
+   | ~<Leader>uC~ | Colorschemes             |
+   
+   *** LSP Pickers
+   | Key          | Description              |
+   |--------------+--------------------------|
+   | ~gd~         | LSP definitions          |
+   | ~gr~         | LSP references           |
+   | ~gI~         | LSP implementations      |
+   | ~gy~         | LSP type definitions     |
+   | ~<Leader>ss~ | LSP document symbols     |
+   | ~<Leader>sS~ | LSP workspace symbols    |
+   
+   *** Todo Comment Pickers
+   | Key          | Description              |
+   |--------------+--------------------------|
+   | ~<Leader>st~ | Todo comments            |
+   | ~<Leader>sT~ | Todo/Fix/Fixme           |
+   
+   *** Other Features
+   - **Toggle System**: Used for treesitter-context, incline, auto-format toggles
+   - **Buffer Delete**: Smart buffer deletion used by bufferline
+   - **Notifier**: Advanced notification system
+   - **Rename**: File rename functionality (~<Leader>cR~)
 
 ** plenary.nvim
    - Lua utility functions used by many plugins
@@ -37,79 +125,97 @@
 
 ** flash.nvim
    Enhanced character motions
-   - Keybindings:
-     - ~s~ - Flash jump (2 chars)
-     - ~S~ - Flash treesitter
-     - ~r~ (operator) - Remote flash
-     - ~R~ (operator) - Treesitter search
-     - ~<C-s>~ (insert) - Toggle flash search
+   
+   | Key         | Description           | Mode     |
+   |-------------+-----------------------+----------|
+   | ~s~         | Flash jump (2 chars)  | Normal   |
+   | ~S~         | Flash treesitter      | Normal   |
+   | ~r~         | Remote flash          | Operator |
+   | ~R~         | Treesitter search     | Operator |
+   | ~<C-s>~     | Toggle flash search   | Insert   |
 
 ** gitsigns.nvim
    Git decorations and operations
-   - Keybindings:
-     - ~]h~ - Next hunk
-     - ~[h~ - Previous hunk
-     - ~<Leader>hs~ - Stage hunk
-     - ~<Leader>hr~ - Reset hunk
-     - ~<Leader>hS~ - Stage buffer
-     - ~<Leader>hu~ - Undo stage hunk
-     - ~<Leader>hR~ - Reset buffer
-     - ~<Leader>hp~ - Preview hunk
-     - ~<Leader>hb~ - Blame line
-     - ~<Leader>hB~ - Toggle blame
-     - ~<Leader>hd~ - Diff this
-     - ~<Leader>hD~ - Diff this ~
+   
+   | Key          | Description       |
+   |--------------+-------------------|
+   | ~]h~         | Next hunk         |
+   | ~[h~         | Previous hunk     |
+   | ~<Leader>hs~ | Stage hunk        |
+   | ~<Leader>hr~ | Reset hunk        |
+   | ~<Leader>hS~ | Stage buffer      |
+   | ~<Leader>hu~ | Undo stage hunk   |
+   | ~<Leader>hR~ | Reset buffer      |
+   | ~<Leader>hp~ | Preview hunk      |
+   | ~<Leader>hb~ | Blame line        |
+   | ~<Leader>hB~ | Toggle blame      |
+   | ~<Leader>hd~ | Diff this         |
+   | ~<Leader>hD~ | Diff this ~       |
 
 ** trouble.nvim
    Pretty diagnostics, references, quickfix
-   - Keybindings:
-     - ~<Leader>et~ - Toggle trouble
-     - ~<Leader>ed~ - Diagnostics (trouble)
-     - ~<Leader>eD~ - Buffer diagnostics
-     - ~<Leader>eL~ - Location list
-     - ~<Leader>eQ~ - Quickfix list
-     - ~<Leader>eT~ - Todo/Fix/Fixme
+   
+   | Key          | Description        |
+   |--------------+--------------------|
+   | ~<Leader>et~ | Toggle trouble     |
+   | ~<Leader>ed~ | Diagnostics        |
+   | ~<Leader>eD~ | Buffer diagnostics |
+   | ~<Leader>eL~ | Location list      |
+   | ~<Leader>eQ~ | Quickfix list      |
+   | ~<Leader>eT~ | Todo/Fix/Fixme     |
 
 ** todo-comments.nvim
    Highlight and search todo comments
-   - Keybindings:
-     - ~]t~ - Next todo comment
-     - ~[t~ - Previous todo comment
-     - ~<Leader>et~ - Todo trouble
-     - ~<Leader>eT~ - Todo/Fix/Fixme trouble
-   - Keywords: TODO, FIX, FIXME, HACK, WARN, PERF, NOTE, TEST
+   
+   | Key          | Description            |
+   |--------------+------------------------|
+   | ~]t~         | Next todo comment      |
+   | ~[t~         | Previous todo comment  |
+   | ~<Leader>et~ | Todo trouble           |
+   | ~<Leader>eT~ | Todo/Fix/Fixme trouble |
+   
+   Keywords: TODO, FIX, FIXME, HACK, WARN, PERF, NOTE, TEST
 
 ** grug-far.nvim
    Find and replace across files
-   - Keybindings:
-     - ~<Leader>sr~ - Search and replace
+   
+   | Key          | Description        |
+   |--------------+--------------------|
+   | ~<Leader>sr~ | Search and replace |
 
 ** neo-tree.nvim
    File explorer tree
    - Dependencies: plenary.nvim, nvim-web-devicons, nui.nvim
-   - Keybindings:
-     - ~<Leader>e~ - Explorer neo-tree (cwd)
-     - ~<Leader>E~ - Explorer neo-tree (root)
-     - ~<Leader>ge~ - Git explorer
-     - ~<Leader>be~ - Buffer explorer
+   
+   | Key          | Description             |
+   |--------------+-------------------------|
+   | ~<Leader>e~  | Explorer neo-tree (cwd) |
+   | ~<Leader>E~  | Explorer neo-tree (root)|
+   | ~<Leader>ge~ | Git explorer            |
+   | ~<Leader>be~ | Buffer explorer         |
 
 ** persistence.nvim
    Session management
-   - Keybindings:
-     - ~<Leader>qs~ - Restore session
-     - ~<Leader>qS~ - Select session
-     - ~<Leader>ql~ - Restore last session
-     - ~<Leader>qd~ - Don't save current session
+   
+   | Key          | Description               |
+   |--------------+---------------------------|
+   | ~<Leader>qs~ | Restore session           |
+   | ~<Leader>qS~ | Select session            |
+   | ~<Leader>ql~ | Restore last session      |
+   | ~<Leader>qd~ | Don't save current session|
 
 * Coding
 ** mini.surround
    Surround text with pairs (replaces nvim-surround)
-   - Keybindings:
-     - ~sa{motion}{char}~ - Add surround
-     - ~sd{char}~ - Delete surround
-     - ~sr{target}{replacement}~ - Change surround
-     - ~sf~/~sF~ - Find surround forward/backward
-     - ~sh~/~sn~ - Highlight/update n lines
+   
+   | Key                        | Description                    |
+   |----------------------------+--------------------------------|
+   | ~gsa{motion}{char}~        | Add surround                   |
+   | ~gsd{char}~                | Delete surround                |
+   | ~gsr{target}{replacement}~ | Replace surround               |
+   | ~gsf~ / ~gsF~              | Find surround forward/backward |
+   | ~gsh~                      | Highlight surround             |
+   | ~gsn~                      | Update n lines                 |
 
 ** mini.pairs
    Auto-pairing of brackets
@@ -131,27 +237,31 @@
 ** yanky.nvim
    Enhanced yank operations
    - Dependencies: sqlite.lua (for persistence)
-   - Keybindings:
-     - ~y~ - Yank (enhanced)
-     - ~p~ - Put after (enhanced)
-     - ~P~ - Put before (enhanced)
-     - ~gp~ - Put after and leave cursor
-     - ~gP~ - Put before and leave cursor
-     - ~<Leader>p~ - Select from yank history
-     - ~[y~ - Cycle backward through yank history
-     - ~]y~ - Cycle forward through yank history
+   
+   | Key          | Description                   |
+   |--------------+-------------------------------|
+   | ~y~          | Yank (enhanced)               |
+   | ~p~          | Put after (enhanced)          |
+   | ~P~          | Put before (enhanced)         |
+   | ~gp~         | Put after and leave cursor    |
+   | ~gP~         | Put before and leave cursor   |
+   | ~<Leader>p~  | Select from yank history      |
+   | ~[y~         | Cycle backward through history|
+   | ~]y~         | Cycle forward through history |
 
 ** blink.cmp
    Completion engine
    - Dependencies: blink.compat, friendly-snippets
-   - Keybindings:
-     - ~<C-n>~ - Next completion
-     - ~<C-p>~ - Previous completion
-     - ~<C-y>~ - Accept completion
-     - ~<CR>~ - Accept completion
-     - ~<C-Space>~ - Trigger completion
-     - ~<Tab>~ - Jump to next snippet placeholder
-     - ~<S-Tab>~ - Jump to previous snippet placeholder
+   
+   | Key         | Description                  |
+   |-------------+------------------------------|
+   | ~<C-n>~     | Next completion              |
+   | ~<C-p>~     | Previous completion          |
+   | ~<C-y>~     | Accept completion            |
+   | ~<CR>~      | Accept completion            |
+   | ~<C-Space>~ | Trigger completion           |
+   | ~<Tab>~     | Next snippet placeholder     |
+   | ~<S-Tab>~   | Previous snippet placeholder |
 
 ** blink.compat
    Compatibility layer for blink.cmp
@@ -167,18 +277,28 @@
 
 ** mini.ai
    Extended text objects
-   - Text objects:
-     - ~i~ / ~a~ + ~(~ , ~[~ , ~{~ , ~<~ , ~"~ , ~'~ , ~`~ - Brackets/quotes
-     - ~if~ / ~af~ - Function
-     - ~ic~ / ~ac~ - Class
-     - ~ia~ / ~aa~ - Argument
-     - ~ii~ / ~ai~ - Indent
+   
+   | Key        | Description      |
+   |------------+------------------|
+   | ~i(~ / ~a(~| Parentheses      |
+   | ~i[~ / ~a[~| Brackets         |
+   | ~i{~ / ~a{~| Curly braces     |
+   | ~i<~ / ~a<~| Angle brackets   |
+   | ~i"~ / ~a"~| Double quotes    |
+   | ~i'~ / ~a'~| Single quotes    |
+   | ~i`~ / ~a`~| Backticks        |
+   | ~if~ / ~af~| Function         |
+   | ~ic~ / ~ac~| Class            |
+   | ~ia~ / ~aa~| Argument         |
+   | ~ii~ / ~ai~| Indent           |
 
 ** mini.align
    Align text
-   - Keybindings:
-     - ~ga~ - Start align mode
-     - ~gA~ - Start align with preview
+   
+   | Key  | Description              |
+   |------+--------------------------|
+   | ~ga~ | Start align mode         |
+   | ~gA~ | Start align with preview |
 
 ** mini.hipatterns
    Highlight patterns in code
@@ -199,15 +319,17 @@
 ** neotest
    Test runner framework
    - Dependencies: nvim-nio, plenary.nvim
-   - Keybindings:
-     - ~<Leader>tt~ - Run nearest test
-     - ~<Leader>tT~ - Run all tests in file
-     - ~<Leader>tr~ - Run tests
-     - ~<Leader>ts~ - Toggle summary
-     - ~<Leader>to~ - Toggle output
-     - ~<Leader>tO~ - Toggle output panel
-     - ~<Leader>tS~ - Stop tests
-     - ~<Leader>tw~ - Toggle watch
+   
+   | Key          | Description           |
+   |--------------+-----------------------|
+   | ~<Leader>tt~ | Run nearest test      |
+   | ~<Leader>tT~ | Run all tests in file |
+   | ~<Leader>tr~ | Run tests             |
+   | ~<Leader>ts~ | Toggle summary        |
+   | ~<Leader>to~ | Toggle output         |
+   | ~<Leader>tO~ | Toggle output panel   |
+   | ~<Leader>tS~ | Stop tests            |
+   | ~<Leader>tw~ | Toggle watch          |
 
 *** Neotest Adapters
     - neotest-plenary - Plenary test adapter
@@ -231,27 +353,35 @@
 
 ** bufferline.nvim
    Buffer tabs
-   - Keybindings:
-     - ~<Leader>bp~ - Toggle pin
-     - ~<Leader>bP~ - Delete non-pinned buffers
-     - ~<Leader>bo~ - Delete other buffers
-     - ~<Leader>br~ - Delete buffers to the right
-     - ~<Leader>bl~ - Delete buffers to the left
-     - ~<S-h>~ - Previous buffer
-     - ~<S-l>~ - Next buffer
-     - ~[b~ - Previous buffer
-     - ~]b~ - Next buffer
+   
+   | Key          | Description               |
+   |--------------+---------------------------|
+   | ~<S-h>~      | Previous buffer           |
+   | ~<S-l>~      | Next buffer               |
+   | ~[b~         | Previous buffer           |
+   | ~]b~         | Next buffer               |
+   | ~<Leader>bp~ | Toggle pin                |
+   | ~<Leader>bP~ | Delete non-pinned buffers |
+   | ~<Leader>bo~ | Delete other buffers      |
+   | ~<Leader>br~ | Delete buffers to right   |
+   | ~<Leader>bl~ | Delete buffers to left    |
+   | ~<Leader>bb~ | Switch to other buffer    |
+   | ~<Leader>`~  | Switch to other buffer    |
+   | ~<Leader>bd~ | Delete buffer             |
+   | ~<Leader>bD~ | Delete buffer and window  |
 
 ** noice.nvim
    UI for messages, cmdline, popupmenu
    - Dependencies: nui.nvim
-   - Keybindings:
-     - ~<Leader>sn~ - Noice (messages)
-     - ~<Leader>sna~ - All messages
-     - ~<Leader>snd~ - Dismiss all
-     - ~<Leader>snt~ - Telescope
-     - ~<C-f>~ (in cmdline) - Scroll forward
-     - ~<C-b>~ (in cmdline) - Scroll backward
+   
+   | Key           | Description     | Mode    |
+   |---------------+-----------------+---------|
+   | ~<Leader>sn~  | Noice messages  | Normal  |
+   | ~<Leader>sna~ | All messages    | Normal  |
+   | ~<Leader>snd~ | Dismiss all     | Normal  |
+   | ~<Leader>snt~ | Noice picker    | Normal  |
+   | ~<C-f>~       | Scroll forward  | Cmdline |
+   | ~<C-b>~       | Scroll backward | Cmdline |
 
 ** mini.icons
    File and filetype icons
@@ -277,13 +407,17 @@
 * Treesitter
 ** nvim-treesitter
    Syntax highlighting and code understanding
-   - Keybindings:
-     - ~<C-Space>~ - Incremental selection
-     - ~<BS>~ (visual) - Decrement selection
-   - Text objects:
-     - ~]f~/~[f~ - Next/prev function
-     - ~]c~/~[c~ - Next/prev class
-     - ~]a~/~[a~ - Next/prev parameter
+   
+   | Key         | Description              | Mode   |
+   |-------------+--------------------------+--------|
+   | ~<C-Space>~ | Incremental selection    | Normal |
+   | ~<BS>~      | Decrement selection      | Visual |
+   | ~]f~        | Next function            | Normal |
+   | ~[f~        | Previous function        | Normal |
+   | ~]c~        | Next class               | Normal |
+   | ~[c~        | Previous class           | Normal |
+   | ~]a~        | Next parameter           | Normal |
+   | ~[a~        | Previous parameter       | Normal |
 
 ** nvim-treesitter-textobjects
    Treesitter-based text objects
@@ -297,27 +431,33 @@
 ** nvim-lspconfig
    LSP client configurations
    - Servers: lua_ls, intelephense (PHP), jsonls, yamlls, marksman, taplo
-   - Keybindings:
-     - ~gd~ - Go to definition
-     - ~gr~ - Go to references
-     - ~gI~ - Go to implementation
-     - ~gy~ - Go to type definition
-     - ~gD~ - Go to declaration
-     - ~K~ - Hover documentation
-     - ~gK~ - Signature help
-     - ~<C-k>~ (insert) - Signature help
-     - ~<Leader>ca~ - Code action
-     - ~<Leader>cc~ - Run codelens
-     - ~<Leader>cC~ - Refresh codelens
-     - ~<Leader>cR~ - Rename file
-     - ~<Leader>cr~ - Rename symbol
-     - ~<Leader>cA~ - Source action
+   
+   | Key          | Description          | Mode   |
+   |--------------+----------------------+--------|
+   | ~gd~         | Go to definition     | Normal |
+   | ~gr~         | Go to references     | Normal |
+   | ~gI~         | Go to implementation | Normal |
+   | ~gy~         | Go to type definition| Normal |
+   | ~gD~         | Go to declaration    | Normal |
+   | ~K~          | Hover documentation  | Normal |
+   | ~gK~         | Signature help       | Normal |
+   | ~<C-k>~      | Signature help       | Insert |
+   | ~<Leader>ca~ | Code action          | Normal |
+   | ~<Leader>cc~ | Run codelens         | Normal |
+   | ~<Leader>cC~ | Refresh codelens     | Normal |
+   | ~<Leader>cR~ | Rename file          | Normal |
+   | ~<Leader>cr~ | Rename symbol        | Normal |
+   | ~<Leader>cA~ | Source action        | Normal |
+   | ~<Leader>cd~ | Line diagnostics     | Normal |
 
 ** mason.nvim
    LSP/DAP/Linter/Formatter installer
-   - Keybindings:
-     - ~<Leader>cm~ - Open Mason UI
-   - Auto-installs: stylua, shfmt, prettier, php-cs-fixer, blade-formatter
+   
+   | Key          | Description |
+   |--------------+-------------|
+   | ~<Leader>cm~ | Open Mason  |
+   
+   Auto-installs: stylua, shfmt, prettier, php-cs-fixer, blade-formatter
 
 ** mason-lspconfig.nvim
    Bridge between mason.nvim and nvim-lspconfig
@@ -326,7 +466,10 @@
 ** lsp_signature.nvim
    LSP signature help
    - Shows function signatures while typing
-   - Toggle: ~<M-x>~
+   
+   | Key    | Description           |
+   |--------+-----------------------|
+   | ~<M-x>~| Toggle signature help |
 
 ** inc-rename.nvim
    Incremental LSP rename
@@ -335,11 +478,14 @@
 * Formatting & Linting
 ** conform.nvim
    Formatter manager
-   - Keybindings:
-     - ~<Leader>cf~ - Format
-     - ~<Leader>uf~ - Toggle auto-format (global)
-     - ~<Leader>uF~ - Toggle auto-format (buffer)
-   - Formatters: prettier, stylua, shfmt, php_cs_fixer, blade-formatter, black, isort, rustfmt, sql-formatter, taplo
+   
+   | Key          | Description                | Mode      |
+   |--------------+----------------------------+-----------|
+   | ~<Leader>cf~ | Format                     | Normal, V |
+   | ~<Leader>uf~ | Toggle auto-format (global)| Normal    |
+   | ~<Leader>uF~ | Toggle auto-format (buffer)| Normal    |
+   
+   Formatters: prettier, stylua, shfmt, php_cs_fixer, blade-formatter, black, isort, rustfmt, sql-formatter, taplo
 
 ** nvim-lint
    Linter manager
@@ -348,163 +494,361 @@
 
 * Language Support
 ** PHP/Blade
-   - blade-nav.nvim - Blade navigation
-   - vim-blade - Blade syntax
-   - Intelephense LSP with WordPress stubs
+*** blade-nav.nvim
+    Blade navigation
+    
+*** vim-blade
+    Blade syntax highlighting
+    
+*** Intelephense LSP
+    PHP language server with WordPress stubs
 
 ** Markdown
-   - render-markdown.nvim - Preview in buffer
-   - markdown-preview.nvim - Browser preview ( ~<Leader>cp~ )
+*** render-markdown.nvim
+    Preview markdown in buffer
+    
+*** markdown-preview.nvim
+    Browser preview for markdown
+    
+    | Key          | Description      |
+    |--------------+------------------|
+    | ~<Leader>cp~ | Preview markdown |
 
 ** Git
-   - lazygit.nvim - Terminal UI for git
-     - ~<Leader>gg~ - Open LazyGit
-     - ~<Leader>gG~ - LazyGit (current file)
-     - ~<Leader>gf~ - LazyGit filter
-     - ~<Leader>gF~ - LazyGit filter (current file)
-   - diffview.nvim - Diff viewer
-     - ~<Leader>gv~ - Open diff view
-     - ~<Leader>gV~ - Close diff view
-   - git-conflict.nvim - Conflict resolution
-     - ~co~ - Choose ours
-     - ~ct~ - Choose theirs
-     - ~c0~ - Choose none
-     - ~cb~ - Choose both
-     - ~]x~ / ~[x~ - Next/prev conflict
-   - committia.vim - Better commit interface
-   - blame.nvim - Git blame viewer
-     - ~<Leader>gb~ - Toggle git blame
+*** lazygit.nvim
+    Terminal UI for git
+    
+    | Key          | Description            |
+    |--------------+------------------------|
+    | ~<Leader>gg~ | Open LazyGit           |
+    | ~<Leader>gG~ | LazyGit (current file) |
+    | ~<Leader>gf~ | LazyGit filter         |
+    | ~<Leader>gF~ | LazyGit filter (file)  |
+
+*** diffview.nvim
+    Git diff viewer
+    
+    | Key          | Description     |
+    |--------------+-----------------|
+    | ~<Leader>gv~ | Open diff view  |
+    | ~<Leader>gV~ | Close diff view |
+
+*** git-conflict.nvim
+    Conflict resolution helper
+    
+    | Key  | Description      |
+    |------+------------------|
+    | ~co~ | Choose ours      |
+    | ~ct~ | Choose theirs    |
+    | ~c0~ | Choose none      |
+    | ~cb~ | Choose both      |
+    | ~]x~ | Next conflict    |
+    | ~[x~ | Previous conflict|
+
+*** committia.vim
+    Better commit interface
+
+*** blame.nvim
+    Git blame viewer
+    
+    | Key          | Description      |
+    |--------------+------------------|
+    | ~<Leader>gb~ | Toggle git blame |
 
 ** Database/SQL
-   - vim-dadbod - Database interface
-   - vim-dadbod-ui - Database UI (~<Leader>D~)
-   - vim-dadbod-completion - SQL completion
+*** vim-dadbod
+    Database interface
+
+*** vim-dadbod-ui
+    Database UI
+    
+    | Key         | Description     |
+    |-------------+-----------------|
+    | ~<Leader>D~ | Toggle DBUI     |
+
+*** vim-dadbod-completion
+    SQL completion support
 
 ** Rust
-   - crates.nvim - Cargo.toml support
-   - Shows crate versions and updates
+*** crates.nvim
+    Cargo.toml support
+    - Shows crate versions and updates
 
 ** JSON/YAML
-   - SchemaStore.nvim - JSON/YAML schemas
-   - nvim-jqx - JSON manipulation tool
+*** SchemaStore.nvim
+    JSON/YAML schemas support
+
+*** nvim-jqx
+    JSON manipulation tool
 
 ** Typst
-   - typst.vim - Typst language support
+*** typst.vim
+    Typst language support
 
 ** Graphviz
-   - wmgraphviz.vim - DOT language support
+*** wmgraphviz.vim
+    DOT language support
 
 ** Swagger
-   - swagger-preview.nvim - OpenAPI/Swagger preview
+*** swagger-preview.nvim
+    OpenAPI/Swagger preview
 
 * Terminal
 ** toggleterm.nvim
    Terminal integration
-   - Keybindings:
-     - ~<C-/>~ - Toggle terminal
-     - ~<Leader>ft~ - Terminal (root dir)
-     - ~<Leader>fT~ - Terminal (cwd)
+   
+   | Key          | Description     |
+   |--------------+-----------------|
+   | ~<C-/>~      | Toggle terminal |
+   | ~<Leader>ft~ | Terminal (root) |
+   | ~<Leader>fT~ | Terminal (cwd)  |
 
 * Colorschemes
-   Available themes:
-   - **kanagawa** (default) - Japanese-inspired theme
-   - **catppuccin** - Pastel theme
-   - **tokyonight** - Tokyo night theme
-   - **rose-pine** - Rosé Pine theme
-   - **onedark** - Atom OneDark theme
-   - **obscure** - Obscure theme
+   
+   | Theme       | Description              | Default | Transparent Support |
+   |-------------+--------------------------+---------+---------------------|
+   | kanagawa    | Japanese-inspired theme  | ✓       | Configurable        |
+   | catppuccin  | Pastel theme            |         | ✓                   |
+   | tokyonight  | Tokyo night theme       |         | ✓                   |
+   | rose-pine   | Rosé Pine theme         |         | Optional            |
+   | onedark     | Atom OneDark theme      |         | Optional            |
+   | obscure     | Obscure theme           |         | Optional            |
 
 * Global Keybindings
+
 ** Window Management
-   - ~<C-h/j/k/l>~ - Navigate windows
-   - ~<C-Arrow>~ - Resize windows
-   - ~<Leader>-~ - Split below
-   - ~<Leader>|~ - Split right
-   - ~<Leader>wd~ - Delete window
-   - ~<Leader>wm~ - Toggle maximize
+   | Key           | Description            |
+   |---------------+------------------------|
+   | ~<C-h/j/k/l>~ | Navigate windows       |
+   | ~<C-Arrow>~   | Resize windows         |
+   | ~<Leader>-~   | Split below            |
+   | ~<Leader>\|~  | Split right            |
+   | ~<Leader>wd~  | Delete window          |
+   | ~<Leader>wm~  | Toggle maximize        |
 
-** Buffer Management
-   - ~<S-h>~ - Previous buffer
-   - ~<S-l>~ - Next buffer
-   - ~[b~ - Previous buffer
-   - ~]b~ - Next buffer
-   - ~<Leader>bb~ - Switch to other buffer
-   - ~<Leader>`~ - Switch to other buffer
-   - ~<Leader>bd~ - Delete buffer
-   - ~<Leader>bD~ - Delete buffer and window
+** Buffer Management  
+   | Key            | Description                |
+   |----------------+----------------------------|
+   | ~<S-h>~        | Previous buffer            |
+   | ~<S-l>~        | Next buffer                |
+   | ~[b~           | Previous buffer            |
+   | ~]b~           | Next buffer                |
+   | ~<Leader>bb~   | Switch to other buffer     |
+   | ~<Leader>`~    | Switch to other buffer     |
+   | ~<Leader>bd~   | Delete buffer              |
+   | ~<Leader>bD~   | Delete buffer and window   |
+   | ~<Leader>bp~   | Toggle pin                 |
+   | ~<Leader>bP~   | Delete non-pinned buffers  |
+   | ~<Leader>bo~   | Delete other buffers       |
+   | ~<Leader>br~   | Delete buffers to right    |
+   | ~<Leader>bl~   | Delete buffers to left     |
 
-** Diagnostics
-   - ~]d~ / ~[d~ - Next/prev diagnostic
-   - ~]e~ / ~[e~ - Next/prev error
-   - ~]w~ / ~[w~ - Next/prev warning
-   - ~<Leader>cd~ - Line diagnostics
+** Navigation
+   | Key            | Description                |
+   |----------------+----------------------------|
+   | ~]d~ / ~[d~    | Next/prev diagnostic       |
+   | ~]e~ / ~[e~    | Next/prev error            |
+   | ~]w~ / ~[w~    | Next/prev warning          |
+   | ~]h~ / ~[h~    | Next/prev git hunk         |
+   | ~]t~ / ~[t~    | Next/prev todo comment     |
+   | ~]q~ / ~[q~    | Next/prev quickfix         |
+   | ~]f~ / ~[f~    | Next/prev function (TS)    |
+   | ~]c~ / ~[c~    | Next/prev class (TS)       |
+   | ~]a~ / ~[a~    | Next/prev parameter (TS)   |
+   | ~]x~ / ~[x~    | Next/prev git conflict     |
+   | ~]y~ / ~[y~    | Next/prev yank history     |
+   | ~n~ / ~N~      | Next/prev search (centered)|
 
 ** File Operations
-   - ~<Leader>fn~ - New file
-   - ~<Leader>fy~ - Yank relative path
-   - ~<Leader>fY~ - Yank full path
+   | Key           | Description         |
+   |---------------+---------------------|
+   | ~<Leader>fn~  | New file            |
+   | ~<Leader>fy~  | Yank relative path  |
+   | ~<Leader>fY~  | Yank full path      |
+   | ~<Leader>ft~  | Terminal (root)     |
+   | ~<Leader>fT~  | Terminal (cwd)      |
 
 ** Tabs
-   - ~<Leader><Tab><Tab>~ - New tab
-   - ~<Leader><Tab>]~ - Next tab
-   - ~<Leader><Tab>[~ - Previous tab
-   - ~<Leader><Tab>d~ - Close tab
-   - ~<Leader><Tab>f~ - First tab
-   - ~<Leader><Tab>l~ - Last tab
-   - ~<Leader><Tab>o~ - Close other tabs
+   | Key                   | Description       |
+   |-----------------------+-------------------|
+   | ~<Leader><Tab><Tab>~  | New tab           |
+   | ~<Leader><Tab>]~      | Next tab          |
+   | ~<Leader><Tab>[~      | Previous tab      |
+   | ~<Leader><Tab>d~      | Close tab         |
+   | ~<Leader><Tab>f~      | First tab         |
+   | ~<Leader><Tab>l~      | Last tab          |
+   | ~<Leader><Tab>o~      | Close other tabs  |
 
 ** Toggle Options
-   - ~<Leader>us~ - Toggle spell
-   - ~<Leader>uw~ - Toggle wrap
-   - ~<Leader>uL~ - Toggle relative line numbers
-   - ~<Leader>ud~ - Toggle diagnostics
-   - ~<Leader>ul~ - Toggle line numbers
-   - ~<Leader>uc~ - Toggle conceal level
-   - ~<Leader>uT~ - Toggle treesitter highlight
-   - ~<Leader>ub~ - Toggle background (dark/light)
-   - ~<Leader>uh~ - Toggle inlay hints
-   - ~<Leader>ui~ - Toggle indent guides
-   - ~<Leader>uf~ - Toggle auto-format (global)
-   - ~<Leader>uF~ - Toggle auto-format (buffer)
+   | Key           | Description                    |
+   |---------------+--------------------------------|
+   | ~<Leader>us~  | Toggle spell                   |
+   | ~<Leader>uw~  | Toggle wrap                    |
+   | ~<Leader>uL~  | Toggle relative line numbers   |
+   | ~<Leader>ud~  | Toggle diagnostics             |
+   | ~<Leader>ul~  | Toggle line numbers            |
+   | ~<Leader>uc~  | Toggle conceal level           |
+   | ~<Leader>uT~  | Toggle treesitter highlight    |
+   | ~<Leader>ub~  | Toggle background (dark/light) |
+   | ~<Leader>uh~  | Toggle inlay hints             |
+   | ~<Leader>ui~  | Toggle indent guides           |
+   | ~<Leader>uf~  | Toggle auto-format (global)    |
+   | ~<Leader>uF~  | Toggle auto-format (buffer)    |
+   | ~<Leader>un~  | Dismiss all notifications      |
+   | ~<Leader>ur~  | Redraw / clear hlsearch        |
 
 ** Quit/Session
-   - ~<Leader>qq~ - Quit all
-   - ~<Leader>qs~ - Restore session
-   - ~<Leader>ql~ - Restore last session
-   - ~<Leader>qd~ - Don't save current session
+   | Key           | Description               |
+   |---------------+---------------------------|
+   | ~<Leader>qq~  | Quit all                  |
+   | ~<Leader>qs~  | Restore session           |
+   | ~<Leader>qS~  | Select session            |
+   | ~<Leader>ql~  | Restore last session      |
+   | ~<Leader>qd~  | Don't save current session|
+
+** Search & Replace
+   | Key           | Description         |
+   |---------------+---------------------|
+   | ~<Leader>sr~  | Search and replace  |
+   | ~<Leader>sn~  | Noice messages      |
+   | ~<Leader>sna~ | All messages        |
+   | ~<Leader>snd~ | Dismiss all         |
+   | ~<Leader>snt~ | Noice picker        |
+
+** Code/LSP
+   | Key           | Description              |
+   |---------------+--------------------------|
+   | ~gd~          | Go to definition         |
+   | ~gr~          | Go to references         |
+   | ~gI~          | Go to implementation     |
+   | ~gy~          | Go to type definition    |
+   | ~gD~          | Go to declaration        |
+   | ~K~           | Hover documentation      |
+   | ~gK~          | Signature help           |
+   | ~<Leader>ca~  | Code action              |
+   | ~<Leader>cc~  | Run codelens             |
+   | ~<Leader>cC~  | Refresh codelens         |
+   | ~<Leader>cd~  | Line diagnostics         |
+   | ~<Leader>cf~  | Format                   |
+   | ~<Leader>cR~  | Rename file              |
+   | ~<Leader>cr~  | Rename symbol            |
+   | ~<Leader>cA~  | Source action            |
+   | ~<Leader>cm~  | Mason UI                 |
+   | ~<Leader>cp~  | Markdown preview toggle  |
+
+** Git
+   | Key           | Description              |
+   |---------------+--------------------------|
+   | ~<Leader>gg~  | LazyGit                  |
+   | ~<Leader>gG~  | LazyGit (current file)   |
+   | ~<Leader>gf~  | LazyGit filter           |
+   | ~<Leader>gF~  | LazyGit filter (file)    |
+   | ~<Leader>gb~  | Toggle git blame         |
+   | ~<Leader>gv~  | Open diff view           |
+   | ~<Leader>gV~  | Close diff view          |
+   | ~<Leader>ge~  | Git explorer (neo-tree)  |
+   | ~<Leader>hs~  | Stage hunk               |
+   | ~<Leader>hr~  | Reset hunk               |
+   | ~<Leader>hS~  | Stage buffer             |
+   | ~<Leader>hu~  | Undo stage hunk          |
+   | ~<Leader>hR~  | Reset buffer             |
+   | ~<Leader>hp~  | Preview hunk             |
+   | ~<Leader>hb~  | Blame line               |
+   | ~<Leader>hB~  | Toggle blame             |
+   | ~<Leader>hd~  | Diff this                |
+   | ~<Leader>hD~  | Diff this ~              |
+
+** Explorer/Files
+   | Key           | Description              |
+   |---------------+--------------------------|
+   | ~<Leader>e~   | Explorer neo-tree (cwd)  |
+   | ~<Leader>E~   | Explorer neo-tree (root) |
+   | ~<Leader>be~  | Buffer explorer          |
+   | ~<Leader>ge~  | Git explorer             |
+
+** Testing
+   | Key           | Description              |
+   |---------------+--------------------------|
+   | ~<Leader>tt~  | Run nearest test         |
+   | ~<Leader>tT~  | Run all tests in file    |
+   | ~<Leader>tr~  | Run tests                |
+   | ~<Leader>ts~  | Toggle summary           |
+   | ~<Leader>to~  | Toggle output            |
+   | ~<Leader>tO~  | Toggle output panel      |
+   | ~<Leader>tS~  | Stop tests               |
+   | ~<Leader>tw~  | Toggle watch             |
+
+** Trouble/Diagnostics
+   | Key           | Description              |
+   |---------------+--------------------------|
+   | ~<Leader>et~  | Toggle trouble           |
+   | ~<Leader>ed~  | Diagnostics (trouble)    |
+   | ~<Leader>eD~  | Buffer diagnostics       |
+   | ~<Leader>eL~  | Location list            |
+   | ~<Leader>eQ~  | Quickfix list            |
+   | ~<Leader>eT~  | Todo/Fix/Fixme           |
+
+** Comments
+   | Key   | Description       |
+   |-------+-------------------|
+   | ~gco~ | Add comment below |
+   | ~gcO~ | Add comment above |
 
 ** Other
-   - ~<Esc><Esc>~ - Clear search highlight
-   - ~n~ (in normal mode) - Next search result (centered)
-   - ~N~ (in normal mode) - Previous search result (centered)
-   - ~<Leader>l~ - Lazy plugin manager
-   - ~<Leader>L~ - Lazy plugin manager changelog
-   - ~<Leader>fn~ - New file
-   - ~<Leader>xl~ - Location list
-   - ~<Leader>xq~ - Quickfix list
-   - ~[q~ - Previous quickfix
-   - ~]q~ - Next quickfix
-   - ~gco~ - Add comment below
-   - ~gcO~ - Add comment above
-   - ~<Leader>K~ - Keywordprg (documentation)
-   - ~<Leader>ur~ - Redraw / clear hlsearch / diff update
-   - ~n~ / ~N~ - Better n and N with centered view
-   - ~<Leader>ui~ - Inspect position
-   - ~<Leader>uI~ - Inspect tree
-   - ~<Leader>fn~ - New file
-   - ~g<C-g>~ - Show cursor position info
+   | Key           | Description                    |
+   |---------------+--------------------------------|
+   | ~<Esc><Esc>~  | Clear search highlight         |
+   | ~<Leader>l~   | Lazy plugin manager            |
+   | ~<Leader>L~   | Lazy changelog                 |
+   | ~<Leader>.~   | Toggle scratch buffer          |
+   | ~<Leader>S~   | Select scratch buffer          |
+   | ~<Leader>n~   | Show notification history      |
+   | ~<Leader>D~   | Database UI                    |
+   | ~<Leader>K~   | Keywordprg (documentation)     |
+   | ~<Leader>xl~  | Location list                  |
+   | ~<Leader>xq~  | Quickfix list                  |
+   | ~<Leader>p~   | Select from yank history       |
+   | ~<Leader>ui~  | Inspect position               |
+   | ~<Leader>uI~  | Inspect tree                   |
+   | ~g<C-g>~      | Show cursor position info      |
+   | ~<C-/>~       | Toggle terminal                |
+   | ~<C-Space>~   | Trigger completion/selection   |
+   | ~<M-x>~       | Toggle signature help          |
+
+* Important Notes
+   
+** Plugin Architecture
+   - **Snacks.nvim** serves as the core utility framework, replacing multiple standalone plugins
+   - **Mini.nvim** modules are used for specific features (surround, pairs, ai, align, etc.)
+   - Both systems work together complementarily
 
 * Plugin Categories Summary
-  - **Plugin Manager**: 1 (lazy.nvim)
-  - **Core Utilities**: 4 (snacks, plenary, sqlite, nui)
-  - **Editor Enhancement**: 8 plugins
-  - **Coding Tools**: 22 plugins (including test adapters)
-  - **UI Components**: 9 plugins
-  - **Treesitter**: 3 plugins
-  - **LSP & Tools**: 5 plugins
-  - **Formatting & Linting**: 2 plugins
-  - **Language Support**: 16 plugins
-  - **Terminal**: 1 plugin
-  - **Colorschemes**: 6 themes
   
-  **Total**: 73 plugins configured
+  | Category             | Count | Plugins                                                  |
+  |----------------------+-------+----------------------------------------------------------|
+  | Plugin Manager       | 1     | lazy.nvim                                                |
+  | Core Utilities       | 4     | snacks, plenary, sqlite, nui       |
+  | Editor Enhancement   | 8     | which-key, flash, gitsigns, trouble, todo-comments,     |
+  |                      |       | grug-far, neo-tree, persistence                         |
+  | Coding Tools         | 22    | mini.surround, mini.pairs, ts-comments, endwise,        |
+  |                      |       | matchup, yanky, blink.cmp, lazydev, mini.ai,           |
+  |                      |       | mini.align, mini.hipatterns, highlight-colors, ccc,     |
+  |                      |       | vim-sleuth, neotest + 9 adapters, nvim-nio             |
+  | UI Components        | 9     | lualine, bufferline, noice, mini.icons,                 |
+  |                      |       | nvim-web-devicons, deadcolumn, treesitter-context,      |
+  |                      |       | incline                                                  |
+  | Treesitter          | 3     | nvim-treesitter, textobjects, autotag                   |
+  | LSP & Tools         | 5     | nvim-lspconfig, mason, mason-lspconfig,                 |
+  |                      |       | lsp_signature, inc-rename                               |
+  | Formatting/Linting  | 2     | conform, nvim-lint                                      |
+  | Language Support    | 16    | blade-nav, vim-blade, render-markdown,                  |
+  |                      |       | markdown-preview, lazygit, diffview, git-conflict,      |
+  |                      |       | committia, blame, dadbod, dadbod-ui,                    |
+  |                      |       | dadbod-completion, crates, SchemaStore, jqx,            |
+  |                      |       | typst, wmgraphviz, swagger-preview                      |
+  | Terminal            | 1     | toggleterm                                               |
+  | Colorschemes        | 6     | kanagawa, catppuccin, tokyonight, rose-pine,           |
+  |                      |       | onedark, obscure                                        |
+  |----------------------+-------+----------------------------------------------------------|
+  | *Total*             | *73*  |                                                          |
+  
