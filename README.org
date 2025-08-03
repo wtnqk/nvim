@@ -20,12 +20,12 @@
    
    | Category           | Key                | Description                     |
    |--------------------+--------------------+---------------------------------|
-   | **Core Features**  | ~<Leader>.~        | Toggle scratch buffer           |
+   | Core Features      | ~<Leader>.~        | Toggle scratch buffer           |
    |                    | ~<Leader>S~        | Select scratch buffer           |
    |                    | ~<Leader>n~        | Show notification history       |
    |                    | ~<Leader>un~       | Dismiss all notifications       |
    |--------------------+--------------------+---------------------------------|
-   | **File/Buffer**    | ~<Leader>,~        | Buffers                         |
+   | File/Buffer        | ~<Leader>,~        | Buffers                         |
    |                    | ~<Leader>/~        | Grep (root)                     |
    |                    | ~<Leader>:~        | Command history                 |
    |                    | ~<Leader><Space>~  | Find files (root)               |
@@ -39,12 +39,12 @@
    |                    | ~<Leader>fR~       | Recent files (cwd)              |
    |                    | ~<Leader>fp~       | Projects                        |
    |--------------------+--------------------+---------------------------------|
-   | **Git Pickers**    | ~<Leader>gc~       | Git commits                     |
+   | Git Pickers        | ~<Leader>gc~       | Git commits                     |
    |                    | ~<Leader>gd~       | Git diff                        |
    |                    | ~<Leader>gs~       | Git status                      |
    |                    | ~<Leader>gS~       | Git stash                       |
    |--------------------+--------------------+---------------------------------|
-   | **Search**         | ~<Leader>sb~       | Buffer lines                    |
+   | Search             | ~<Leader>sb~       | Buffer lines                    |
    |                    | ~<Leader>sB~       | Grep buffers                    |
    |                    | ~<Leader>sg~       | Grep (root)                     |
    |                    | ~<Leader>sG~       | Grep (cwd)                      |
@@ -54,7 +54,7 @@
    |                    | ~<Leader>s"~       | Registers                       |
    |                    | ~<Leader>s/~       | Search history                  |
    |--------------------+--------------------+---------------------------------|
-   | **System**         | ~<Leader>sa~       | Auto commands                   |
+   | System             | ~<Leader>sa~       | Auto commands                   |
    |                    | ~<Leader>sc~       | Command history                 |
    |                    | ~<Leader>sC~       | Commands                        |
    |                    | ~<Leader>sd~       | Diagnostics                     |
@@ -72,21 +72,21 @@
    |                    | ~<Leader>su~       | Undo history                    |
    |                    | ~<Leader>uC~       | Colorschemes                    |
    |--------------------+--------------------+---------------------------------|
-   | **LSP**            | ~gd~               | LSP definitions                 |
+   | LSP                | ~gd~               | LSP definitions                 |
    |                    | ~gr~               | LSP references                  |
    |                    | ~gI~               | LSP implementations             |
    |                    | ~gy~               | LSP type definitions            |
    |                    | ~<Leader>ss~       | LSP document symbols            |
    |                    | ~<Leader>sS~       | LSP workspace symbols           |
    |--------------------+--------------------+---------------------------------|
-   | **Todo Comments**  | ~<Leader>st~       | Todo comments                   |
+   | Todo Comments      | ~<Leader>st~       | Todo comments                   |
    |                    | ~<Leader>sT~       | Todo/Fix/Fixme                  |
    
-   **Other Features**
-   - **Toggle System**: Used for treesitter-context, incline, auto-format toggles
-   - **Buffer Delete**: Smart buffer deletion used by bufferline
-   - **Notifier**: Advanced notification system
-   - **Rename**: File rename functionality (~<Leader>cR~)
+   Other Features:
+   - Toggle System: Used for treesitter-context, incline, auto-format toggles
+   - Buffer Delete: Smart buffer deletion used by bufferline
+   - Notifier: Advanced notification system
+   - Rename: File rename functionality (~<Leader>cR~)
 
 ** plenary.nvim
    - Lua utility functions used by many plugins
@@ -476,13 +476,13 @@
 
 * Language Support
 ** PHP/Blade
-   - **blade-nav.nvim** - Blade navigation
-   - **vim-blade** - Blade syntax highlighting
-   - **Intelephense LSP** - PHP language server with WordPress stubs
+   - blade-nav.nvim - Blade navigation
+   - vim-blade - Blade syntax highlighting
+   - Intelephense LSP - PHP language server with WordPress stubs
 
 ** Markdown
-   - **render-markdown.nvim** - Preview markdown in buffer
-   - **markdown-preview.nvim** - Browser preview for markdown
+   - render-markdown.nvim - Preview markdown in buffer
+   - markdown-preview.nvim - Browser preview for markdown
    
    | Key          | Description      |
    |--------------+------------------|
@@ -491,28 +491,28 @@
 ** Git
    | Plugin              | Description                | Key Bindings                       |
    |---------------------+----------------------------+------------------------------------|
-   | **lazygit.nvim**    | Terminal UI for git        | ~<Leader>gg~ - Open LazyGit       |
+   | lazygit.nvim    | Terminal UI for git        | ~<Leader>gg~ - Open LazyGit       |
    |                     |                            | ~<Leader>gG~ - LazyGit (file)      |
    |                     |                            | ~<Leader>gf~ - LazyGit filter      |
    |                     |                            | ~<Leader>gF~ - Filter (file)       |
    |---------------------+----------------------------+------------------------------------|
-   | **diffview.nvim**   | Git diff viewer            | ~<Leader>gv~ - Open diff view      |
+   | diffview.nvim   | Git diff viewer            | ~<Leader>gv~ - Open diff view      |
    |                     |                            | ~<Leader>gV~ - Close diff view     |
    |---------------------+----------------------------+------------------------------------|
-   | **git-conflict.nvim** | Conflict resolution      | ~co~ - Choose ours                 |
+   | git-conflict.nvim | Conflict resolution      | ~co~ - Choose ours                 |
    |                     |                            | ~ct~ - Choose theirs               |
    |                     |                            | ~c0~ - Choose none                 |
    |                     |                            | ~cb~ - Choose both                 |
    |                     |                            | ~]x~/~[x~ - Next/prev conflict     |
    |---------------------+----------------------------+------------------------------------|
-   | **committia.vim**   | Better commit interface    |                                    |
+   | committia.vim   | Better commit interface    |                                    |
    |---------------------+----------------------------+------------------------------------|
-   | **blame.nvim**      | Git blame viewer           | ~<Leader>gb~ - Toggle git blame    |
+   | blame.nvim      | Git blame viewer           | ~<Leader>gb~ - Toggle git blame    |
 
 ** Database/SQL
-   - **vim-dadbod** - Database interface
-   - **vim-dadbod-ui** - Database UI (~<Leader>D~ to toggle)
-   - **vim-dadbod-completion** - SQL completion support
+   - vim-dadbod - Database interface
+   - vim-dadbod-ui - Database UI (~<Leader>D~ to toggle)
+   - vim-dadbod-completion - SQL completion support
 
 ** Other Languages
    | Language | Plugin | Description |
@@ -749,8 +749,8 @@
 * Important Notes
    
 ** Plugin Architecture
-   - **Snacks.nvim** serves as the core utility framework, replacing multiple standalone plugins
-   - **Mini.nvim** modules are used for specific features (surround, pairs, ai, align, etc.)
+   - Snacks.nvim serves as the core utility framework, replacing multiple standalone plugins
+   - Mini.nvim modules are used for specific features (surround, pairs, ai, align, etc.)
    - Both systems work together complementarily
 
 * Plugin Categories Summary
