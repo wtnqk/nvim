@@ -71,10 +71,4 @@ return {
       })
     end,
   },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "kanagawa",
-    },
-  },
 }
