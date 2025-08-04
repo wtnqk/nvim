@@ -6,12 +6,17 @@ local get_intelephense_license = function()
 end
 
 require("lspconfig").intelephense.setup({
-  filetypes = { "php" },
+  filetypes = { "php", "blade", "php_only" },
   init_options = {
     licenceKey = get_intelephense_license(),
   },
   settings = {
     intelephense = {
+      filetypes = { "php", "blade", "php_only" },
+      files = {
+        associations = { "*.php", "*.blade.php" }, -- Associating .blade.php files as well
+        maxSize = 5000000,
+      },
       format = {
         enable = true,
       },

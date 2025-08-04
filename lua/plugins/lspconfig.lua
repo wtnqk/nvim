@@ -44,6 +44,37 @@ return {
         timeout_ms = nil,
       },
       servers = {
+        intelephense = {
+          cmd = { "intelephense", "--stdio" },
+          filetypes = { "php", "blade" },
+          init_options = {
+            licenceKey = vim.fn.trim(
+              vim.fn.system("cat " .. os.getenv("HOME") .. "/.config/intelephense/license.txt 2>/dev/null || echo ''")
+            ),
+          },
+          settings = {
+            intelephense = {
+              files = {
+                associations = { "*.php", "*.blade.php" },
+                maxSize = 5000000,
+              },
+              format = {
+                enable = true,
+              },
+              completion = {
+                fullyQualifyGlobalConstantsAndFunctions = false,
+                suggestObjectOperatorStaticMethods = true,
+                insertUseDeclaration = true,
+              },
+              diagnostics = {
+                enable = true,
+              },
+            },
+          },
+        },
+        volar = {},
+        tsserver = {},
+        vtsls = {},
         lua_ls = {
           settings = {
             Lua = {
@@ -70,11 +101,10 @@ return {
             },
           },
         },
-
-        -- vuels = {}, -- vuelsの設定を追加
       },
       setup = {},
     }
+
     return ret
   end,
 }

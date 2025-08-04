@@ -53,3 +53,4 @@ require("lazy").setup({
 
 require("require.intelephense")
 require("require.typos")
+require("config.laravel").setup()

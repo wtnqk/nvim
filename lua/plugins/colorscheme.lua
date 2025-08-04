@@ -63,10 +63,10 @@ return {
         overrides = function(colors) -- add/modify highlights
           return {}
         end,
-        theme = "wave", -- Load "wave" theme
+        theme = "dragon", -- Load "wave" theme
         background = { -- map the value of 'background' option to a theme
-          dark = "wave", -- try "dragon" !
-          light = "lotus",
+          dark = "dragon", -- try "dragon" !
+          light = "dragon",
         },
       })
     end,
