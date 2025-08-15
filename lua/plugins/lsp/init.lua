@@ -312,7 +312,7 @@ return {
       local all_mslp_servers = {}
 
       if have_mason then
-        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_package)
+        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_mason)
       end
 
       local exclude_automatic_enable = {}
@@ -450,3 +450,4 @@ return {
     end,
   },
 }
+
