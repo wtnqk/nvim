@@ -40,6 +40,10 @@ map("n", "<Leader>bs", "<Cmd>w<CR>", { desc = "Save Buffer" })
 map("n", "<Leader>bd", "<Cmd>bdelete<CR>", { desc = "Delete Buffer" })
 map("n", "<Leader>bD", "<Cmd>bd<CR>", { desc = "Delete Buffer and Window" })
 
+-- Buffer navigation with Shift+H and Shift+L
+map("n", "H", "<Cmd>bprevious<CR>", { desc = "Previous Buffer" })
+map("n", "L", "<Cmd>bnext<CR>", { desc = "Next Buffer" })
+
 -- Add empty lines above/below
 map("n", "[ ", "v:lua.Util.keymaps.put_empty_line(v:true)", { expr = true, desc = "Add Empty Line Above" })
 map("n", "] ", "v:lua.Util.keymaps.put_empty_line(v:false)", { expr = true, desc = "Add Empty Line Below" })
