@@ -31,10 +31,11 @@
    |                    | ~<Leader><Space>~  | Find files (root)               |
    |                    | ~<Leader>fb~       | Buffers                         |
    |                    | ~<Leader>fB~       | All buffers                     |
-   |                    | ~<Leader>fc~       | Config files                    |
-   |                    | ~<Leader>ff~       | Find files (root)               |
+   |                    | ~<Leader>fc~       | Find config files (fff)         |
+   |                    | ~<Leader>sf~       | Find files (root)               |
    |                    | ~<Leader>fF~       | Find files (cwd)                |
-   |                    | ~<Leader>fg~       | Git files                       |
+   |                    | ~<Leader>ff~       | Fuzzy file picker (fff)         |
+   |                    | ~<Leader>fg~       | Git files (fff)                 |
    |                    | ~<Leader>fr~       | Recent files                    |
    |                    | ~<Leader>fR~       | Recent files (cwd)              |
    |                    | ~<Leader>fp~       | Projects                        |
@@ -175,6 +176,37 @@
    | ~<Leader>E~  | Explorer neo-tree (root)|
    | ~<Leader>ge~ | Git explorer            |
    | ~<Leader>be~ | Buffer explorer         |
+
+** fff.nvim
+   Fast fuzzy file finder for Neovim with typo-resistant search
+   - Dependencies: nvim-web-devicons, Rust toolchain (for building)
+   - Features: 
+     - Rust backend for <10ms search in 50k+ file codebases
+     - Typo-resistant fuzzy search with smart scoring
+     - Git status integration with modification time tracking
+     - Frecency tracking to prioritize frequently accessed files
+     - Image preview support (including SVG)
+     - Debug mode with scoring visualization
+   
+   | Key          | Description                   |
+   |--------------+-------------------------------|
+   | ~<Leader>ff~ | Find files in current directory|
+   | ~<Leader>fc~ | Find files in config directory|
+   | ~<Leader>fg~ | Find files in git root        |
+   
+   Picker keybindings:
+   | Key                | Description              |
+   |--------------------|--------------------------|
+   | ~<Esc>~            | Close picker             |
+   | ~<CR>~             | Select file              |
+   | ~<C-s>~            | Open in horizontal split |
+   | ~<C-v>~            | Open in vertical split   |
+   | ~<C-t>~            | Open in new tab          |
+   | ~<Up>~ / ~<C-p>~   | Move up                  |
+   | ~<Down>~ / ~<C-n>~ | Move down                |
+   | ~<C-u>~            | Scroll preview up        |
+   | ~<C-d>~            | Scroll preview down      |
+   | ~<F2>~             | Toggle debug scores      |
 
 ** persistence.nvim
    Session management
@@ -696,6 +728,9 @@
    | ~<Leader>E~   | Explorer neo-tree (root) |
    | ~<Leader>be~  | Buffer explorer          |
    | ~<Leader>ge~  | Git explorer             |
+   | ~<Leader>ff~  | Fuzzy file picker (fff)  |
+   | ~<Leader>fc~  | Config files (fff)       |
+   | ~<Leader>fg~  | Git root files (fff)     |
 
 ** Testing
    | Key           | Description              |
@@ -759,8 +794,8 @@
   |----------------------+-------+----------------------------------------------------------|
   | Plugin Manager       | 1     | lazy.nvim                                                |
   | Core Utilities       | 4     | snacks, plenary, sqlite, nui       |
-  | Editor Enhancement   | 8     | which-key, flash, gitsigns, trouble, todo-comments,     |
-  |                      |       | grug-far, neo-tree, persistence                         |
+  | Editor Enhancement   | 9     | which-key, flash, gitsigns, trouble, todo-comments,     |
+  |                      |       | grug-far, neo-tree, persistence, fff                    |
   | Coding Tools         | 22    | mini.surround, mini.pairs, ts-comments, endwise,        |
   |                      |       | matchup, yanky, blink.cmp, lazydev, mini.ai,           |
   |                      |       | mini.align, mini.hipatterns, highlight-colors, ccc,     |
@@ -781,5 +816,5 @@
   | Colorschemes        | 6     | kanagawa, catppuccin, tokyonight, rose-pine,           |
   |                      |       | onedark, obscure                                        |
   |----------------------+-------+----------------------------------------------------------|
-  | *Total*             | *73*  |                                                          |
+  | *Total*             | *74*  |                                                          |
   

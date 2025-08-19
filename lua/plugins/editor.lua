@@ -595,7 +595,7 @@ return {
         desc = "Find Config File",
       },
       {
-        "<Leader>ff",
+        "<Leader>sf",
         function()
           Snacks.picker.files({ cwd = Util.root() })
         end,
