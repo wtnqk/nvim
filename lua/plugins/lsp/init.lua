@@ -331,12 +331,8 @@ return {
             return
           end
         end
-        vim.lsp.config(server, server_opts)
-        if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-          vim.lsp.enable(server)
-          return true
-        end
-        return false
+        require("lspconfig")[server].setup(server_opts)
+        return server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server)
       end
 
       local ensure_installed = {}
@@ -363,9 +359,15 @@ return {
           handlers = { setup },
         }
 
-        setup_config.automatic_enable = {
-          exclude = exclude_automatic_enable,
-        }
+        local function setup(server)
+          local server_opts = servers[server] or {}
+          server_opts = server_opts == true and {} or server_opts
+          if server_opts.enabled ~= false and not vim.tbl_contains(exclude_automatic_enable, server) then
+            configure(server)
+          end
+        end
+
+        setup_config.handlers = { setup }
 
         mlsp.setup(setup_config)
       end
