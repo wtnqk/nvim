@@ -78,3 +78,6 @@ if os.getenv("WSL_DISTRO_NAME") then
     desc = "Do not fix end of line",
   })
 end
+
+-- Laravel keybindings setup
+require("config.laravel").setup()
