@@ -190,34 +190,37 @@ local plugin_specs = {
   },
 
   -- fancy start screen
-  {
-    "nvimdev/dashboard-nvim",
-    cond = firenvim_not_active,
-    config = function()
-      require("config.dashboard-nvim")
-    end,
-  },
+  -- MIGRATED TO SNACKS: dashboard
+  -- {
+  --   "nvimdev/dashboard-nvim",
+  --   cond = firenvim_not_active,
+  --   config = function()
+  --     require("config.dashboard-nvim")
+  --   end,
+  -- },
 
-  {
-    "nvim-mini/mini.indentscope",
-    version = false,
-    config = function()
-      local mini_indent = require("mini.indentscope")
-      mini_indent.setup {
-        draw = {
-          animation = mini_indent.gen_animation.none(),
-        },
-        symbol = "▏",
-      }
-    end,
-  },
-  {
-    "luukvbaal/statuscol.nvim",
-    opts = {},
-    config = function()
-      require("config.nvim-statuscol")
-    end,
-  },
+  -- MIGRATED TO SNACKS: indent
+  -- {
+  --   "nvim-mini/mini.indentscope",
+  --   version = false,
+  --   config = function()
+  --     local mini_indent = require("mini.indentscope")
+  --     mini_indent.setup {
+  --       draw = {
+  --         animation = mini_indent.gen_animation.none(),
+  --       },
+  --       symbol = "▏",
+  --     }
+  --   end,
+  -- },
+  -- MIGRATED TO SNACKS: statuscolumn
+  -- {
+  --   "luukvbaal/statuscol.nvim",
+  --   opts = {},
+  --   config = function()
+  --     require("config.nvim-statuscol")
+  --   end,
+  -- },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
@@ -237,13 +240,14 @@ local plugin_specs = {
   { "itchyny/vim-highlighturl", event = "BufReadPost" },
 
   -- notification plugin
-  {
-    "rcarriga/nvim-notify",
-    event = "VeryLazy",
-    config = function()
-      require("config.nvim-notify")
-    end,
-  },
+  -- MIGRATED TO SNACKS: notifier
+  -- {
+  --   "rcarriga/nvim-notify",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("config.nvim-notify")
+  --   end,
+  -- },
 
   { "nvim-lua/plenary.nvim", lazy = true },
 
@@ -371,13 +375,14 @@ local plugin_specs = {
       require("config.git-conflict")
     end,
   },
-  {
-    "ruifm/gitlinker.nvim",
-    event = "User InGitRepo",
-    config = function()
-      require("config.git-linker")
-    end,
-  },
+  -- MIGRATED TO SNACKS: gitbrowse
+  -- {
+  --   "ruifm/gitlinker.nvim",
+  --   event = "User InGitRepo",
+  --   config = function()
+  --     require("config.git-linker")
+  --   end,
+  -- },
 
   -- Show git change (change, delete, add) signs in vim sign column
   {
@@ -519,8 +524,15 @@ local plugin_specs = {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    ---@type snacks.Config
     opts = {
-      -- more beautiful vim.ui.input
+      -- Core features
+      bigfile = { enabled = true },
+      quickfile = { enabled = true },
+
+      -- UI replacements
+      dashboard = { enabled = true },
+      notifier = { enabled = true },
       input = {
         enabled = true,
         win = {
@@ -528,21 +540,56 @@ local plugin_specs = {
           backdrop = true,
         },
       },
-      -- more beautiful vim.ui.select
       picker = { enabled = true },
+      statuscolumn = { enabled = true },
+      indent = { enabled = true },
+
+      -- File management
+      explorer = { enabled = true },
+      bufdelete = { enabled = true },
+      rename = { enabled = true },
+
+      -- Git features
+      gitbrowse = { enabled = true },
+      lazygit = { enabled = true },
+
+      -- Navigation and editing
+      scope = { enabled = true },
+      words = { enabled = true },
+      scroll = { enabled = true },
+
+      -- Terminal
+      terminal = { enabled = true },
+
+      -- Productivity
+      scratch = { enabled = true },
+      zen = { enabled = true },
+      dim = { enabled = true },
+
+      -- Development tools
+      debug = { enabled = true },
+      profiler = { enabled = true },
+
+      -- Toggle keymaps
+      toggle = { enabled = true },
     },
+    config = function(_, opts)
+      require("snacks").setup(opts)
+      -- Keymaps are defined in lua/mappings.lua
+    end,
   },
   -- show and trim trailing whitespaces
   { "jdhao/whitespace.nvim", event = "VeryLazy" },
 
   -- file explorer
-  {
-    "nvim-tree/nvim-tree.lua",
-    keys = { "<space>s" },
-    config = function()
-      require("config.nvim-tree")
-    end,
-  },
+  -- MIGRATED TO SNACKS: explorer
+  -- {
+  --   "nvim-tree/nvim-tree.lua",
+  --   keys = { "<space>s" },
+  --   config = function()
+  --     require("config.nvim-tree")
+  --   end,
+  -- },
 
   {
     "j-hui/fidget.nvim",

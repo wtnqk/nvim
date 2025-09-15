@@ -29,25 +29,7 @@ keymap.set("n", [[\x]], "<cmd>windo lclose <bar> cclose <cr>", {
   desc = "close qf and location list",
 })
 
--- Delete a buffer, without closing the window, see https://stackoverflow.com/q/4465095/6064933
-keymap.set("n", [[\d]], "<cmd>bprevious <bar> bdelete #<cr>", {
-  silent = true,
-  desc = "delete current buffer",
-})
-
-keymap.set("n", [[\D]], function()
-  local buf_ids = vim.api.nvim_list_bufs()
-  local cur_buf = vim.api.nvim_win_get_buf(0)
-
-  for _, buf_id in pairs(buf_ids) do
-    -- do not Delete unlisted buffers, which may lead to unexpected errors
-    if vim.api.nvim_get_option_value("buflisted", { buf = buf_id }) and buf_id ~= cur_buf then
-      vim.api.nvim_buf_delete(buf_id, { force = true })
-    end
-  end
-end, {
-  desc = "delete other buffers",
-})
+-- Buffer delete is now handled by Snacks.nvim (see below)
 
 -- Insert a blank line below or above current line (do not move the cursor),
 -- see https://stackoverflow.com/a/16136133/6064933
@@ -246,3 +228,37 @@ keymap.set("n", "<Esc>", function()
 end, {
   desc = "close floating win",
 })
+
+-- Snacks.nvim keymaps
+local snacks_ok, snacks = pcall(require, "snacks")
+if snacks_ok then
+  -- Zen mode
+  keymap.set("n", "<leader>z", function() snacks.zen() end, { desc = "Toggle Zen Mode" })
+  keymap.set("n", "<leader>Z", function() snacks.zen.zoom() end, { desc = "Toggle Zoom" })
+
+  -- Scratch buffers
+  keymap.set("n", "<leader>.", function() snacks.scratch() end, { desc = "Toggle Scratch Buffer" })
+  keymap.set("n", "<leader>S", function() snacks.scratch.select() end, { desc = "Select Scratch Buffer" })
+
+  -- Git features (replacing gitlinker)
+  keymap.set("n", "<leader>gb", function() snacks.gitbrowse() end, { desc = "Git Browse" })
+  keymap.set("n", "<leader>gB", function() snacks.git.blame_line() end, { desc = "Git Blame Line" })
+  keymap.set("n", "<leader>gf", function() snacks.lazygit.log_file() end, { desc = "Lazygit Current File History" })
+  keymap.set("n", "<leader>gg", function() snacks.lazygit() end, { desc = "Lazygit" })
+  keymap.set("n", "<leader>gl", function() snacks.lazygit.log() end, { desc = "Lazygit Log (cwd)" })
+
+  -- Buffer management (replacing custom buffer delete)
+  keymap.set("n", [[\d]], function() snacks.bufdelete() end, { desc = "Delete Buffer" })
+  keymap.set("n", [[\D]], function() snacks.bufdelete.other() end, { desc = "Delete Other Buffers" })
+
+  -- File explorer (replacing nvim-tree)
+  keymap.set("n", "<space>s", function() snacks.explorer() end, { desc = "Explorer" })
+  keymap.set("n", "<leader>se", function() snacks.explorer.open() end, { desc = "Explorer (cwd)" })
+
+  -- Rename files
+  keymap.set("n", "<leader>rn", function() snacks.rename.rename_file() end, { desc = "Rename File" })
+
+  -- Terminal
+  keymap.set({ "n", "t" }, "<C-/>", function() snacks.terminal.toggle() end, { desc = "Toggle Terminal" })
+  keymap.set({ "n", "t" }, "<C-_>", function() snacks.terminal.toggle() end, { desc = "which_key_ignore" })
+end
