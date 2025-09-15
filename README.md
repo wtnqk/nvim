@@ -55,8 +55,8 @@ and how to set up on different platforms (Linux, macOS, and Windows).
 # Features #
 
 + Plugin management via [Lazy.nvim](https://github.com/folke/lazy.nvim).
-+ Code, snippet, word auto-completion via [nvim-cmp](https://github.com/hrsh7th/nvim-cmp).
-+ Language server protocol (LSP) support via [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig).
++ Code, snippet, word auto-completion via [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) and native LSP completion.
++ Language server protocol (LSP) support via Neovim 0.11+ native API and [Mason](https://github.com/williamboman/mason.nvim) for server management.
 + Git integration via [vim-fugitive](https://github.com/tpope/vim-fugitive).
 + Better escaping from insert mode via [better-escape.vim](https://github.com/nvim-zh/better-escape.vim).
 + Ultra-fast project-wide fuzzy searching via [fzf-lua](https://github.com/ibhagwan/fzf-lua).
@@ -64,7 +64,7 @@ and how to set up on different platforms (Linux, macOS, and Windows).
 + Faster matching pair insertion and jump via [nvim-autopairs](https://github.com/windwp/nvim-autopairs).
 + Smarter and faster matching pair management (add, replace or delete) via [vim-sandwich](https://github.com/machakann/vim-sandwich).
 + Fast buffer jump via [hop.nvim](https://github.com/phaazon/hop.nvim).
-+ Powerful snippet insertion via [Ultisnips](https://github.com/SirVer/ultisnips).
++ Powerful snippet insertion via [LuaSnip](https://github.com/L3MON4D3/LuaSnip).
 + Beautiful statusline via [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim).
 + File tree explorer via [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua).
 + Better quickfix list with [nvim-bqf](https://github.com/kevinhwang91/nvim-bqf).
@@ -73,7 +73,7 @@ and how to set up on different platforms (Linux, macOS, and Windows).
 + Asynchronous code execution via [asyncrun.vim](https://github.com/skywind3000/asyncrun.vim).
 + Code highlighting via [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
 + Code editing using true nvim inside browser via [firenvim](https://github.com/glacambre/firenvim).
-+ Beautiful colorscheme via [sainnhe/gruvbox-material](https://github.com/sainnhe/gruvbox-material) and other colorschemes.
++ Beautiful colorscheme via [kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim) and other colorschemes.
 + Markdown writing and previewing via [vim-markdown](https://github.com/preservim/vim-markdown) and [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim).
 + LaTeX editing and previewing via [vimtex](https://github.com/lervag/vimtex)
 + Animated GUI style notification via [nvim-notify](https://github.com/rcarriga/nvim-notify).
