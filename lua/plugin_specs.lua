@@ -48,8 +48,10 @@ local plugin_specs = {
   --   opts_extend = { "sources.default" },
   -- },
   {
-    "neovim/nvim-lspconfig",
+    "williamboman/mason.nvim",
+    lazy = false,
     config = function()
+      require("mason").setup()
       require("config.lsp")
     end,
   },

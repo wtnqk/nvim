@@ -567,7 +567,7 @@
    | ~<Leader>fT~ | Terminal (cwd)  |
 
 * Colorschemes
-   
+
    | Theme       | Description              | Default | Transparent Support |
    |-------------+--------------------------+---------+---------------------|
    | kanagawa    | Japanese-inspired theme  | ✓       | Configurable        |

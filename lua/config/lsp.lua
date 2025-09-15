@@ -1,5 +1,30 @@
 local utils = require("utils")
 
+-- Auto-install LSP servers with Mason
+local ensure_installed = {
+  "lua-language-server",
+  "bash-language-server",
+  "yaml-language-server",
+  "vim-language-server",
+  "pyright",
+  "ruff",
+  "intelephense",
+}
+
+-- Ensure servers are installed
+vim.defer_fn(function()
+  local registry = require("mason-registry")
+  for _, server in ipairs(ensure_installed) do
+    local ok, pkg = pcall(registry.get_package, server)
+    if ok then
+      if not pkg:is_installed() then
+        vim.notify("Installing " .. server, vim.log.levels.INFO)
+        pkg:install()
+      end
+    end
+  end
+end, 100)
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("lsp_buf_conf", { clear = true }),
   callback = function(event_context)
@@ -11,6 +36,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     local bufnr = event_context.buf
+
+    -- Enable LSP-based auto-completion for Neovim 0.11+
+    vim.lsp.completion.enable(true, client.id, bufnr, {
+      autotrigger = true, -- Enable auto-completion
+    })
 
     -- Mappings.
     local map = function(mode, l, r, opts)
@@ -113,7 +143,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Enable lsp servers when they are available
 
-local capabilities = require("lsp_utils").get_default_capabilities()
+local capabilities = require("config.lsp.utils").get_default_capabilities()
 
 vim.lsp.config("*", {
   capabilities = capabilities,
@@ -122,27 +152,31 @@ vim.lsp.config("*", {
   },
 })
 
--- A mapping from lsp server name to the executable name
-local enabled_lsp_servers = {
-  pyright = "delance-langserver",
-  ruff = "ruff",
-  lua_ls = "lua-language-server",
-  -- ltex = "ltex-ls",
-  -- clangd = "clangd",
-  vimls = "vim-language-server",
-  bashls = "bash-language-server",
-  yamlls = "yaml-language-server",
+-- Add Mason's bin directory to PATH for LSP servers
+local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+
+-- LSP servers to enable
+local servers = {
+  "pyright",
+  "ruff",
+  "lua_ls",
+  "vimls",
+  "bashls",
+  "yamlls",
+  "intelephense",
 }
 
-for server_name, lsp_executable in pairs(enabled_lsp_servers) do
-  if utils.executable(lsp_executable) then
-    vim.lsp.enable(server_name)
+-- Configure individual LSP servers using Neovim 0.11 API
+-- Load server-specific configurations from lua/config/lsp directory
+for _, server_name in ipairs(servers) do
+  local ok, server_config = pcall(require, "config.lsp." .. server_name)
+  if ok then
+    vim.lsp.config(server_name, server_config)
   else
-    local msg = string.format(
-      "Executable '%s' for server '%s' not found! Server will not be enabled",
-      lsp_executable,
-      server_name
-    )
-    vim.notify(msg, vim.log.levels.WARN, { title = "Nvim-config" })
+    vim.lsp.config(server_name, {})
   end
 end
+
+-- Enable all configured servers
+vim.lsp.enable(servers)
