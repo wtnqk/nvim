@@ -32,7 +32,7 @@ keymap.set("n", [[\x]], "<cmd>windo lclose <bar> cclose <cr>", {
 -- Buffer delete is now handled by Snacks.nvim (see below)
 
 -- Insert a blank line below or above current line (do not move the cursor),
--- see https://stackoverflow.com/a/16136133/6064933
+-- see https://stackoverflow.com/a/16136133
 keymap.set("n", "<space>o", "printf('m`%so<ESC>``', v:count1)", {
   expr = true,
   desc = "insert line below",
@@ -139,11 +139,21 @@ keymap.set("n", "gB", '<cmd>call buf_utils#GoToBuffer(v:count, "backward")<cr>',
   desc = "go to buffer (backward)",
 })
 
+-- Buffer navigation with Shift+h/l
+keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
+keymap.set("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+
 -- Switch windows
 keymap.set("n", "<left>", "<c-w>h")
 keymap.set("n", "<Right>", "<C-W>l")
 keymap.set("n", "<Up>", "<C-W>k")
 keymap.set("n", "<Down>", "<C-W>j")
+
+-- Window navigation with Ctrl+h/j/k/l
+keymap.set("n", "<C-h>", "<C-W>h", { desc = "Go to left window" })
+keymap.set("n", "<C-l>", "<C-W>l", { desc = "Go to right window" })
+keymap.set("n", "<C-k>", "<C-W>k", { desc = "Go to upper window" })
+keymap.set("n", "<C-j>", "<C-W>j", { desc = "Go to lower window" })
 
 -- Text objects for URL
 keymap.set({ "x", "o" }, "iu", "<cmd>call text_obj#URL()<cr>", { desc = "URL text object" })
@@ -229,36 +239,227 @@ end, {
   desc = "close floating win",
 })
 
--- Snacks.nvim keymaps
-local snacks_ok, snacks = pcall(require, "snacks")
-if snacks_ok then
-  -- Zen mode
-  keymap.set("n", "<leader>z", function() snacks.zen() end, { desc = "Toggle Zen Mode" })
-  keymap.set("n", "<leader>Z", function() snacks.zen.zoom() end, { desc = "Toggle Zoom" })
+-- Snacks.nvim keymaps (following README.org conventions)
+-- Defer Snacks keymaps until after plugins are loaded
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    local snacks_ok, snacks = pcall(require, "snacks")
+    if not snacks_ok then
+      vim.notify("Snacks not available for keymaps", vim.log.levels.WARN)
+      return
+    end
 
-  -- Scratch buffers
-  keymap.set("n", "<leader>.", function() snacks.scratch() end, { desc = "Toggle Scratch Buffer" })
-  keymap.set("n", "<leader>S", function() snacks.scratch.select() end, { desc = "Select Scratch Buffer" })
+    -- Create a command for testing
+    vim.api.nvim_create_user_command("LazyGit", function()
+      snacks.lazygit()
+    end, { desc = "Open LazyGit" })
 
-  -- Git features (replacing gitlinker)
-  keymap.set("n", "<leader>gb", function() snacks.gitbrowse() end, { desc = "Git Browse" })
-  keymap.set("n", "<leader>gB", function() snacks.git.blame_line() end, { desc = "Git Blame Line" })
-  keymap.set("n", "<leader>gf", function() snacks.lazygit.log_file() end, { desc = "Lazygit Current File History" })
-  keymap.set("n", "<leader>gg", function() snacks.lazygit() end, { desc = "Lazygit" })
-  keymap.set("n", "<leader>gl", function() snacks.lazygit.log() end, { desc = "Lazygit Log (cwd)" })
+    -- Core Features (from README.org Section 17)
+    keymap.set("n", "<leader>.", function()
+      snacks.scratch()
+    end, { desc = "Toggle scratch buffer" })
+    keymap.set("n", "<leader>S", function()
+      snacks.scratch.select()
+    end, { desc = "Select scratch buffer" })
+    keymap.set("n", "<leader>n", function()
+      snacks.notifier.show_history()
+    end, { desc = "Show notification history" })
+    keymap.set("n", "<leader>un", function()
+      snacks.notifier.hide()
+    end, { desc = "Dismiss all notifications" })
 
-  -- Buffer management (replacing custom buffer delete)
-  keymap.set("n", [[\d]], function() snacks.bufdelete() end, { desc = "Delete Buffer" })
-  keymap.set("n", [[\D]], function() snacks.bufdelete.other() end, { desc = "Delete Other Buffers" })
+    -- File/Buffer Pickers (README.org Section 17)
+    keymap.set("n", "<leader>,", function()
+      snacks.picker.buffers()
+    end, { desc = "Buffers" })
+    keymap.set("n", "<leader>/", function()
+      snacks.picker.grep()
+    end, { desc = "Grep (root)" })
+    keymap.set("n", "<leader>:", function()
+      snacks.picker.command_history()
+    end, { desc = "Command history" })
+    keymap.set("n", "<leader><Space>", function()
+      snacks.picker.files()
+    end, { desc = "Find files (root)" })
+    keymap.set("n", "<leader>fb", function()
+      snacks.picker.buffers()
+    end, { desc = "Buffers" })
+    -- fff.nvim keymaps
+    keymap.set("n", "<leader>ff", "<cmd>F<cr>", { desc = "Find files (fff)" })
+    keymap.set("n", "<leader>fc", function()
+      vim.cmd("F " .. vim.fn.stdpath("config"))
+    end, { desc = "Find config files (fff)" })
+    keymap.set("n", "<leader>fg", function()
+      local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+      if vim.v.shell_error == 0 then
+        vim.cmd("F " .. git_root)
+      else
+        vim.notify("Not in a git repository", vim.log.levels.WARN)
+      end
+    end, { desc = "Find files in git root (fff)" })
 
-  -- File explorer (replacing nvim-tree)
-  keymap.set("n", "<space>s", function() snacks.explorer() end, { desc = "Explorer" })
-  keymap.set("n", "<leader>se", function() snacks.explorer.open() end, { desc = "Explorer (cwd)" })
+    keymap.set("n", "<leader>fr", function()
+      snacks.picker.recent()
+    end, { desc = "Recent files" })
+    keymap.set("n", "<leader>fF", function()
+      snacks.picker.files { cwd = vim.fn.expand("%:p:h") }
+    end, { desc = "Find files (cwd)" })
 
-  -- Rename files
-  keymap.set("n", "<leader>rn", function() snacks.rename.rename_file() end, { desc = "Rename File" })
+    -- Git Pickers & LazyGit (README.org Git section)
+    keymap.set("n", "<leader>gc", function()
+      snacks.picker.git_commits()
+    end, { desc = "Git commits" })
+    keymap.set("n", "<leader>gs", function()
+      snacks.picker.git_status()
+    end, { desc = "Git status" })
+    -- LazyGit
+    keymap.set("n", "<leader>gg", function()
+      snacks.lazygit()
+    end, { desc = "LazyGit" })
+    keymap.set("n", "<leader>gG", function()
+      snacks.lazygit.log_file()
+    end, { desc = "LazyGit (file)" })
+    keymap.set("n", "<leader>gf", function()
+      snacks.lazygit.log()
+    end, { desc = "LazyGit filter" })
+    keymap.set({ "n", "v" }, "<leader>gb", function()
+      snacks.gitbrowse()
+    end, { desc = "Git browse" })
 
-  -- Terminal
-  keymap.set({ "n", "t" }, "<C-/>", function() snacks.terminal.toggle() end, { desc = "Toggle Terminal" })
-  keymap.set({ "n", "t" }, "<C-_>", function() snacks.terminal.toggle() end, { desc = "which_key_ignore" })
-end
+    -- Search pickers (README.org Search section)
+    keymap.set("n", "<leader>sb", function()
+      snacks.picker.lines()
+    end, { desc = "Buffer lines" })
+    keymap.set("n", "<leader>sg", function()
+      snacks.picker.grep()
+    end, { desc = "Grep (root)" })
+    keymap.set("n", "<leader>sG", function()
+      snacks.picker.grep { cwd = vim.fn.expand("%:p:h") }
+    end, { desc = "Grep (cwd)" })
+    keymap.set("n", "<leader>sw", function()
+      snacks.picker.grep { search = vim.fn.expand("<cword>") }
+    end, { desc = "Word (root)" })
+    keymap.set("n", "<leader>sh", function()
+      snacks.picker.help()
+    end, { desc = "Help pages" })
+    keymap.set("n", "<leader>sk", function()
+      snacks.picker.keymaps()
+    end, { desc = "Keymaps" })
+    keymap.set("n", "<leader>ss", function()
+      snacks.picker.lsp_symbols()
+    end, { desc = "LSP document symbols" })
+    keymap.set("n", "<leader>sS", function()
+      snacks.picker.lsp_workspace_symbols()
+    end, { desc = "LSP workspace symbols" })
+
+    -- LSP pickers (README.org LSP section)
+    keymap.set("n", "gd", function()
+      snacks.picker.lsp_definitions()
+    end, { desc = "LSP definitions" })
+    keymap.set("n", "gr", function()
+      snacks.picker.lsp_references()
+    end, { desc = "LSP references" })
+    keymap.set("n", "gI", function()
+      snacks.picker.lsp_implementations()
+    end, { desc = "LSP implementations" })
+    keymap.set("n", "gy", function()
+      snacks.picker.lsp_type_definitions()
+    end, { desc = "LSP type definitions" })
+
+    -- LSP info commands
+    keymap.set("n", "<leader>li", function()
+      local clients = vim.lsp.get_clients()
+      if #clients == 0 then
+        vim.notify("No LSP clients attached", vim.log.levels.WARN)
+        return
+      end
+      local info = "LSP Clients:\n"
+      for _, client in ipairs(clients) do
+        info = info .. string.format("• %s (id: %d)\n", client.name, client.id)
+        info = info .. string.format("  Root: %s\n", client.config.root_dir or "N/A")
+      end
+      vim.notify(info, vim.log.levels.INFO)
+    end, { desc = "LSP Info" })
+    keymap.set("n", "<leader>ll", function()
+      vim.cmd("tabnew " .. vim.lsp.get_log_path())
+    end, { desc = "LSP Log" })
+    keymap.set("n", "<leader>lr", function()
+      vim.lsp.stop_client(vim.lsp.get_clients())
+      vim.cmd("edit")
+      vim.notify("LSP servers restarted", vim.log.levels.INFO)
+    end, { desc = "LSP Restart" })
+    keymap.set("n", "<leader>lh", "<cmd>checkhealth lsp<cr>", { desc = "LSP Health" })
+
+    -- Diagnostic keymaps
+    keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
+    keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
+    keymap.set("n", "<leader>d", function()
+      vim.diagnostic.open_float({ focusable = true, focus = true })
+    end, { desc = "Show diagnostic in float (focusable)" })
+    keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
+
+    -- Explorer (README.org Explorer/Files section)
+    keymap.set("n", "<leader>e", function()
+      snacks.explorer()
+    end, { desc = "Explorer neo-tree (cwd)" })
+    keymap.set("n", "<leader>E", function()
+      snacks.explorer.open()
+    end, { desc = "Explorer neo-tree (root)" })
+    keymap.set("n", "<leader>be", function()
+      snacks.picker.buffers()
+    end, { desc = "Buffer explorer" })
+    keymap.set("n", "<leader>ge", function()
+      snacks.picker.git_status()
+    end, { desc = "Git explorer" })
+
+    -- Buffer management (README.org Buffer Management section)
+    keymap.set("n", "<leader>bd", function()
+      snacks.bufdelete()
+    end, { desc = "Delete buffer" })
+    keymap.set("n", "<leader>bD", function()
+      snacks.bufdelete.delete { force = true }
+    end, { desc = "Delete buffer and window" })
+    keymap.set("n", "<leader>bo", function()
+      snacks.bufdelete.other()
+    end, { desc = "Delete other buffers" })
+    -- Keep existing shortcuts for compatibility
+    keymap.set("n", [[\d]], function()
+      snacks.bufdelete()
+    end, { desc = "Delete buffer" })
+    keymap.set("n", [[\D]], function()
+      snacks.bufdelete.other()
+    end, { desc = "Delete other buffers" })
+
+    -- Rename (README.org Code/LSP section)
+    keymap.set("n", "<leader>cR", function()
+      snacks.rename.rename_file()
+    end, { desc = "Rename file" })
+
+    -- Terminal (README.org Terminal section)
+    keymap.set({ "n", "t" }, "<C-/>", function()
+      snacks.terminal.toggle()
+    end, { desc = "Toggle terminal" })
+    -- Floating terminal
+    keymap.set({ "n", "t" }, "<C-\\>", function()
+      snacks.terminal.toggle(vim.o.shell, { win = { style = "terminal" } })
+    end, { desc = "Terminal (float)" })
+    keymap.set({ "n", "t" }, "<C-_>", function()
+      snacks.terminal.toggle()
+    end, { desc = "which_key_ignore" })
+    keymap.set("n", "<leader>ft", function()
+      snacks.terminal()
+    end, { desc = "Terminal (root)" })
+    keymap.set("n", "<leader>fT", function()
+      snacks.terminal { cwd = vim.fn.expand("%:p:h") }
+    end, { desc = "Terminal (cwd)" })
+
+    -- Zen mode
+    keymap.set("n", "<leader>z", function()
+      snacks.zen()
+    end, { desc = "Toggle Zen Mode" })
+    keymap.set("n", "<leader>Z", function()
+      snacks.zen.zoom()
+    end, { desc = "Toggle Zoom" })
+  end,
+})

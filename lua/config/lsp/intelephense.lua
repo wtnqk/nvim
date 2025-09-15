@@ -2,6 +2,7 @@
 return {
   cmd = { 'intelephense', '--stdio' },
   filetypes = { 'php' },
+  format_on_save = false,  -- Disable format on save for PHP files
   root_markers = { '.git', 'composer.json' },
   init_options = {
     -- License key for premium features (optional)

@@ -102,6 +102,25 @@ local plugin_specs = {
     end,
   },
 
+  -- Fast fuzzy file finder with typo-resistant search
+  {
+    "nvimtools/fff.nvim",
+    event = "VeryLazy",
+    opts = {
+      preview = {
+        enabled = true,
+        position = "right",
+        width = 0.5,
+      },
+      frecency = {
+        enabled = true,
+      },
+      git = {
+        enabled = true,
+      },
+    },
+  },
+
   -- Show match number and index for searching
   {
     "kevinhwang91/nvim-hlslens",
@@ -531,8 +550,36 @@ local plugin_specs = {
       quickfile = { enabled = true },
 
       -- UI replacements
-      dashboard = { enabled = true },
-      notifier = { enabled = true },
+      dashboard = {
+        enabled = true,
+        sections = {
+          { section = "header", padding = 1 },
+          { section = "keys", padding = 1 },
+          { section = "startup", padding = 1 },
+        },
+        preset = {
+          header = [[
+ ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗
+ ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║
+ ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║
+ ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║
+ ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║
+ ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝]],
+          keys = {
+            { icon = "󰈞", desc = "Find File", key = "f", action = ":lua Snacks.picker.files()" },
+            { icon = "󰈢", desc = "Recent Files", key = "r", action = ":lua Snacks.picker.recent()" },
+            { icon = "󰈬", desc = "Grep", key = "g", action = ":FzfLua live_grep" },
+            { icon = "", desc = "Config", key = "c", action = ":tabnew $MYVIMRC | tcd %:p:h" },
+            { icon = "", desc = "New File", key = "n", action = ":enew" },
+            { icon = "󰗼", desc = "Quit", key = "q", action = ":qa" },
+          },
+        },
+      },
+      notifier = {
+        enabled = true,
+        timeout = 1500,
+        style = "compact",
+      },
       input = {
         enabled = true,
         win = {
@@ -540,18 +587,65 @@ local plugin_specs = {
           backdrop = true,
         },
       },
-      picker = { enabled = true },
-      statuscolumn = { enabled = true },
-      indent = { enabled = true },
+      picker = {
+        enabled = true,
+        win = {
+          list = {
+            keys = {
+              -- Disable gg in picker list to avoid conflict with <leader>gg for LazyGit
+              ["gg"] = false,
+            },
+          },
+        },
+      },
+      statuscolumn = {
+        enabled = true,
+        left = { "mark", "sign" },
+        right = { "fold", "git" },
+        folds = {
+          open = false,
+          git_hl = false,
+        },
+      },
+      indent = {
+        enabled = true,
+        char = "▏",
+        animate = {
+          enabled = false,
+        },
+      },
 
       -- File management
-      explorer = { enabled = true },
+      explorer = {
+        enabled = true,
+        win = {
+          width = 30,
+          position = "left",
+        },
+      },
       bufdelete = { enabled = true },
       rename = { enabled = true },
 
       -- Git features
-      gitbrowse = { enabled = true },
-      lazygit = { enabled = true },
+      gitbrowse = {
+        enabled = true,
+        -- Support for Azure DevOps
+        url_patterns = {
+          ["dev.azure.com"] = {
+            branch = "/branchCompare?baseVersion=GB{branch}&targetVersion=GBmaster&_a=commits",
+            file = "?path=/{file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=120",
+            commit = "/commit/{commit}",
+          },
+        },
+      },
+      lazygit = {
+        enabled = true,
+        -- Optional: Configure window size
+        win = {
+          width = 0.9,
+          height = 0.9,
+        },
+      },
 
       -- Navigation and editing
       scope = { enabled = true },
@@ -574,7 +668,10 @@ local plugin_specs = {
       toggle = { enabled = true },
     },
     config = function(_, opts)
-      require("snacks").setup(opts)
+      local snacks = require("snacks")
+      snacks.setup(opts)
+      -- Replace vim.notify with Snacks notifier
+      vim.notify = snacks.notifier.notify
       -- Keymaps are defined in lua/mappings.lua
     end,
   },

@@ -18,7 +18,10 @@ vim.g.loaded_node_provider = 0 -- Disable node provider
 vim.g.did_install_default_menus = 1 -- do not load menu
 
 -- Custom mapping <leader> (see `:h mapleader` for more info)
-vim.g.mapleader = ","
+-- IMPORTANT: Space as leader causes conflicts with motion commands when followed by g, /, l, etc.
+-- Using comma as leader avoids these conflicts
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
 
 -- Enable highlighting for lua HERE doc inside vim script
 vim.g.vimsyn_embed = "l"

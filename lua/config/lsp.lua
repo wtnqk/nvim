@@ -1,14 +1,15 @@
 local utils = require("utils")
 
--- Auto-install LSP servers with Mason
+-- Auto-install LSP servers and formatters with Mason
 local ensure_installed = {
   "lua-language-server",
+  "stylua", -- Lua formatter
   "bash-language-server",
   "yaml-language-server",
   "vim-language-server",
-  "pyright",
   "ruff",
   "intelephense",
+  "volar",
 }
 
 -- Ensure servers are installed
@@ -101,6 +102,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "<C-k>", vim.lsp.buf.signature_help)
     map("n", "<space>rn", vim.lsp.buf.rename, { desc = "varialbe rename" })
     map("n", "<space>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
+    map({ "n", "v" }, "<space>f", function()
+      vim.lsp.buf.format({ async = false, timeout_ms = 2000 })
+    end, { desc = "Format code" })
     map("n", "<space>wa", vim.lsp.buf.add_workspace_folder, { desc = "add workspace folder" })
     map("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, { desc = "remove workspace folder" })
     map("n", "<space>wl", function()
@@ -108,10 +112,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, { desc = "list workspace folder" })
 
     -- Set some key bindings conditional on server capabilities
-    -- Disable ruff hover feature in favor of Pyright
-    if client.name == "ruff" then
-      client.server_capabilities.hoverProvider = false
-    end
+    -- Ruff is now the only Python LSP server
 
     -- Uncomment code below to enable inlay hint from language server, some LSP server supports inlay hint,
     -- but disable this feature by default, so you may need to enable inlay hint in the LSP server config.
@@ -136,6 +137,32 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end,
       })
     end
+
+    -- Get server config to check format_on_save setting
+    local server_config = vim.lsp.config[client.name] or {}
+    local format_on_save = server_config.format_on_save == true
+
+    -- Format on save if the server supports it and is enabled in server config
+    if client.server_capabilities.documentFormattingProvider and format_on_save then
+      local format_group = vim.api.nvim_create_augroup("LspFormatOnSave_" .. client.name, { clear = false })
+      vim.api.nvim_clear_autocmds({ group = format_group, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = format_group,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({
+            bufnr = bufnr,
+            async = false,
+            timeout_ms = 2000,
+            filter = function(lsp_client)
+              -- Only use this specific LSP server for formatting
+              return lsp_client.name == client.name
+            end
+          })
+        end,
+        desc = "Format on save with " .. client.name,
+      })
+    end
   end,
   nested = true,
   desc = "Configure buffer keymap and behavior based on LSP",
@@ -158,13 +185,13 @@ vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
 -- LSP servers to enable
 local servers = {
-  "pyright",
   "ruff",
   "lua_ls",
   "vimls",
   "bashls",
   "yamlls",
   "intelephense",
+  "volar",
 }
 
 -- Configure individual LSP servers using Neovim 0.11 API
@@ -172,6 +199,7 @@ local servers = {
 for _, server_name in ipairs(servers) do
   local ok, server_config = pcall(require, "config.lsp." .. server_name)
   if ok then
+    -- Store the format_on_save setting before registering
     vim.lsp.config(server_name, server_config)
   else
     vim.lsp.config(server_name, {})
@@ -180,3 +208,33 @@ end
 
 -- Enable all configured servers
 vim.lsp.enable(servers)
+
+-- Auto-start LSP servers for matching filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function(args)
+    -- Get filetype and buffer
+    local ft = vim.bo[args.buf].filetype
+    local bufnr = args.buf
+
+    -- Check if any LSP clients are already attached
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    if #clients > 0 then
+      return
+    end
+
+    -- Start appropriate LSP servers based on filetype
+    for _, server in ipairs(servers) do
+      local config = vim.lsp.config[server]
+      if config and config.filetypes then
+        if vim.tbl_contains(config.filetypes, ft) then
+          vim.lsp.start(config, {
+            bufnr = bufnr,
+            name = server,
+          })
+        end
+      end
+    end
+  end,
+  desc = "Auto-start LSP servers for matching filetypes",
+})

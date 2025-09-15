@@ -1,5 +1,8 @@
 -- settings for lua-language-server can be found on https://luals.github.io/wiki/settings/
 return {
+  filetypes = { "lua" },
+  cmd = { "lua-language-server" },
+  format_on_save = true,  -- Enable format on save for Lua files
   settings = {
     Lua = {
       runtime = {

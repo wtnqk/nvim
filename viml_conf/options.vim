@@ -12,6 +12,7 @@ set splitkeep=screen
 " Time in milliseconds to wait for a mapped sequence to complete,
 " see https://unix.stackexchange.com/q/36882/221410 for more info
 set timeoutlen=500
+set ttimeoutlen=0
 
 set updatetime=500  " For CursorHold events
 
