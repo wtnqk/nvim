@@ -9,6 +9,12 @@ M.get_default_capabilities = function()
     lineFoldingOnly = true,
   }
 
+  -- Add blink.cmp capabilities if available
+  local has_blink, blink = pcall(require, "blink.cmp")
+  if has_blink then
+    capabilities = blink.get_lsp_capabilities(capabilities)
+  end
+
   return capabilities
 end
 

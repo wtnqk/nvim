@@ -53,9 +53,9 @@ keymap.set("n", "0", "g0")
 -- see https://vi.stackexchange.com/q/12607/15292
 keymap.set("x", "$", "g_")
 
--- Go to start or end of line easier
-keymap.set({ "n", "x" }, "H", "^")
-keymap.set({ "n", "x" }, "L", "g_")
+-- Go to start or end of line easier (removed H/L to avoid conflict with Shift+h/l)
+-- keymap.set({ "n", "x" }, "H", "^")
+-- keymap.set({ "n", "x" }, "L", "g_")
 
 -- Continuous visual shifting (does not exit Visual mode), `gv` means
 -- to reselect previous visual area, see https://superuser.com/q/310417/736190
@@ -250,11 +250,6 @@ vim.api.nvim_create_autocmd("User", {
       return
     end
 
-    -- Create a command for testing
-    vim.api.nvim_create_user_command("LazyGit", function()
-      snacks.lazygit()
-    end, { desc = "Open LazyGit" })
-
     -- Core Features (from README.org Section 17)
     keymap.set("n", "<leader>.", function()
       snacks.scratch()
@@ -279,32 +274,21 @@ vim.api.nvim_create_autocmd("User", {
     keymap.set("n", "<leader>:", function()
       snacks.picker.command_history()
     end, { desc = "Command history" })
-    keymap.set("n", "<leader><Space>", function()
-      snacks.picker.files()
-    end, { desc = "Find files (root)" })
+
+    -- Use FFF.nvim for file finding (faster and smarter)
+    keymap.set("n", "<leader><Space>", "<cmd>FFFFind<cr>", { desc = "Find files (FFF)" })
+    keymap.set("n", "ff", "<cmd>FFFFind<cr>", { desc = "Find files (FFF)" })
+    keymap.set("n", "<leader>ff", function()
+      vim.cmd("FFFFind " .. vim.fn.fnamemodify(vim.fn.finddir(".git", ";"), ":h"))
+    end, { desc = "Find files in git root (FFF)" })
+
     keymap.set("n", "<leader>fb", function()
       snacks.picker.buffers()
     end, { desc = "Buffers" })
-    -- fff.nvim keymaps
-    keymap.set("n", "<leader>ff", "<cmd>F<cr>", { desc = "Find files (fff)" })
-    keymap.set("n", "<leader>fc", function()
-      vim.cmd("F " .. vim.fn.stdpath("config"))
-    end, { desc = "Find config files (fff)" })
-    keymap.set("n", "<leader>fg", function()
-      local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
-      if vim.v.shell_error == 0 then
-        vim.cmd("F " .. git_root)
-      else
-        vim.notify("Not in a git repository", vim.log.levels.WARN)
-      end
-    end, { desc = "Find files in git root (fff)" })
 
     keymap.set("n", "<leader>fr", function()
       snacks.picker.recent()
     end, { desc = "Recent files" })
-    keymap.set("n", "<leader>fF", function()
-      snacks.picker.files { cwd = vim.fn.expand("%:p:h") }
-    end, { desc = "Find files (cwd)" })
 
     -- Git Pickers & LazyGit (README.org Git section)
     keymap.set("n", "<leader>gc", function()
@@ -353,34 +337,24 @@ vim.api.nvim_create_autocmd("User", {
       snacks.picker.lsp_workspace_symbols()
     end, { desc = "LSP workspace symbols" })
 
-    -- LSP pickers (README.org LSP section)
-    keymap.set("n", "gd", function()
-      snacks.picker.lsp_definitions()
-    end, { desc = "LSP definitions" })
-    keymap.set("n", "gr", function()
-      snacks.picker.lsp_references()
-    end, { desc = "LSP references" })
-    keymap.set("n", "gI", function()
-      snacks.picker.lsp_implementations()
-    end, { desc = "LSP implementations" })
-    keymap.set("n", "gy", function()
-      snacks.picker.lsp_type_definitions()
-    end, { desc = "LSP type definitions" })
+    -- LSP pickers are now defined in a separate autocmd to handle hover windows
 
     -- LSP info commands
     keymap.set("n", "<leader>li", function()
-      local clients = vim.lsp.get_clients()
+      local bufnr = vim.api.nvim_get_current_buf()
+      local clients = vim.lsp.get_clients({ bufnr = bufnr })
       if #clients == 0 then
-        vim.notify("No LSP clients attached", vim.log.levels.WARN)
+        vim.notify("No LSP clients attached to current buffer", vim.log.levels.WARN)
         return
       end
-      local info = "LSP Clients:\n"
+      local info = string.format("LSP Clients for buffer %d:\n", bufnr)
       for _, client in ipairs(clients) do
         info = info .. string.format("• %s (id: %d)\n", client.name, client.id)
         info = info .. string.format("  Root: %s\n", client.config.root_dir or "N/A")
       end
       vim.notify(info, vim.log.levels.INFO)
     end, { desc = "LSP Info" })
+
     keymap.set("n", "<leader>ll", function()
       vim.cmd("tabnew " .. vim.lsp.get_log_path())
     end, { desc = "LSP Log" })
@@ -391,17 +365,16 @@ vim.api.nvim_create_autocmd("User", {
     end, { desc = "LSP Restart" })
     keymap.set("n", "<leader>lh", "<cmd>checkhealth lsp<cr>", { desc = "LSP Health" })
 
-    -- Diagnostic keymaps
+    -- Diagnostic navigation keymaps
     keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
     keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-    keymap.set("n", "<leader>d", function()
-      vim.diagnostic.open_float({ focusable = true, focus = true })
-    end, { desc = "Show diagnostic in float (focusable)" })
+    -- Diagnostic hover is handled by hover.nvim with K/S-K
+
     keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
 
     -- Explorer (README.org Explorer/Files section)
     keymap.set("n", "<leader>e", function()
-      snacks.explorer()
+      snacks.explorer()  -- This already acts as toggle
     end, { desc = "Explorer neo-tree (cwd)" })
     keymap.set("n", "<leader>E", function()
       snacks.explorer.open()
@@ -437,22 +410,37 @@ vim.api.nvim_create_autocmd("User", {
     end, { desc = "Rename file" })
 
     -- Terminal (README.org Terminal section)
+    -- Floating terminal (just toggle, uses count for multiple terminals)
+    keymap.set({ "n", "t" }, "<C-\\>", function()
+      snacks.terminal.toggle(vim.o.shell, { win = { position = "float" } })
+    end, { desc = "Terminal (float)" })
+
+    -- Normal terminal in split (can create new with leader-tn)
     keymap.set({ "n", "t" }, "<C-/>", function()
       snacks.terminal.toggle()
     end, { desc = "Toggle terminal" })
-    -- Floating terminal
-    keymap.set({ "n", "t" }, "<C-\\>", function()
-      snacks.terminal.toggle(vim.o.shell, { win = { style = "terminal" } })
-    end, { desc = "Terminal (float)" })
     keymap.set({ "n", "t" }, "<C-_>", function()
       snacks.terminal.toggle()
     end, { desc = "which_key_ignore" })
-    keymap.set("n", "<leader>ft", function()
-      snacks.terminal()
-    end, { desc = "Terminal (root)" })
-    keymap.set("n", "<leader>fT", function()
-      snacks.terminal { cwd = vim.fn.expand("%:p:h") }
-    end, { desc = "Terminal (cwd)" })
+
+    -- Create new terminal in split
+    keymap.set("n", "<leader>tn", function()
+      snacks.terminal.open()
+    end, { desc = "New terminal (split)" })
+
+    -- Terminal list
+    keymap.set("n", "<leader>tl", function()
+      local terminals = snacks.terminal.list()
+      if #terminals == 0 then
+        vim.notify("No active terminals", vim.log.levels.INFO)
+      else
+        local info = "Active Terminals:\n"
+        for i, term in ipairs(terminals) do
+          info = info .. string.format("%d. Terminal %d\n", i, term.id or i)
+        end
+        vim.notify(info, vim.log.levels.INFO)
+      end
+    end, { desc = "List terminals" })
 
     -- Zen mode
     keymap.set("n", "<leader>z", function()
@@ -461,5 +449,104 @@ vim.api.nvim_create_autocmd("User", {
     keymap.set("n", "<leader>Z", function()
       snacks.zen.zoom()
     end, { desc = "Toggle Zoom" })
+  end,
+})
+
+-- Hover.nvim keymaps (separate autocmd to prevent failure cascade)
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    local hover_ok, hover = pcall(require, "hover")
+    if hover_ok then
+      -- K to open hover or enter if already open
+      keymap.set("n", "K", function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        local hover_win = vim.b[bufnr].hover_preview
+        if hover_win and vim.api.nvim_win_is_valid(hover_win) then
+          -- Hover is already open, enter it
+          hover.enter()
+        else
+          -- Hover is not open, open it
+          hover.open()
+        end
+      end, { desc = "hover.nvim (open/enter)" })
+
+      -- Tab/S-Tab for hover source switching
+      keymap.set("n", "<Tab>", function()
+        hover.switch("next")
+      end, { desc = "Next hover source" })
+      keymap.set("n", "<S-Tab>", function()
+        hover.switch("previous")
+      end, { desc = "Previous hover source" })
+    end
+  end,
+})
+
+-- Override gd, gr, gI globally to handle hover windows
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    local snacks_ok, snacks = pcall(require, "snacks")
+    if not snacks_ok then
+      return
+    end
+
+    -- Override the global LSP navigation keymaps to handle hover windows
+    keymap.set("n", "gd", function()
+      local winid = vim.api.nvim_get_current_win()
+      local win_config = vim.api.nvim_win_get_config(winid)
+
+      -- If we're in a floating window (hover), close it first
+      if win_config.relative ~= "" then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+        vim.schedule(function()
+          snacks.picker.lsp_definitions()
+        end)
+      else
+        snacks.picker.lsp_definitions()
+      end
+    end, { desc = "LSP definitions" })
+
+    keymap.set("n", "gr", function()
+      local winid = vim.api.nvim_get_current_win()
+      local win_config = vim.api.nvim_win_get_config(winid)
+
+      if win_config.relative ~= "" then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+        vim.schedule(function()
+          snacks.picker.lsp_references()
+        end)
+      else
+        snacks.picker.lsp_references()
+      end
+    end, { desc = "LSP references" })
+
+    keymap.set("n", "gI", function()
+      local winid = vim.api.nvim_get_current_win()
+      local win_config = vim.api.nvim_win_get_config(winid)
+
+      if win_config.relative ~= "" then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+        vim.schedule(function()
+          snacks.picker.lsp_implementations()
+        end)
+      else
+        snacks.picker.lsp_implementations()
+      end
+    end, { desc = "LSP implementations" })
+
+    keymap.set("n", "gy", function()
+      local winid = vim.api.nvim_get_current_win()
+      local win_config = vim.api.nvim_win_get_config(winid)
+
+      if win_config.relative ~= "" then
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+        vim.schedule(function()
+          snacks.picker.lsp_type_definitions()
+        end)
+      else
+        snacks.picker.lsp_type_definitions()
+      end
+    end, { desc = "LSP type definitions" })
   end,
 })

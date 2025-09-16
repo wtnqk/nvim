@@ -21,32 +21,20 @@ local firenvim_not_active = function()
 end
 
 local plugin_specs = {
-  -- auto-completion engine
-  { "hrsh7th/cmp-nvim-lsp", lazy = true },
-  { "hrsh7th/cmp-path", lazy = true },
-  { "hrsh7th/cmp-buffer", lazy = true },
-  { "hrsh7th/cmp-omni", lazy = true },
-  { "hrsh7th/cmp-cmdline", lazy = true },
-  { "saadparwaiz1/cmp_luasnip", lazy = true },
+  -- auto-completion engine (using blink.cmp instead of nvim-cmp)
   {
-    "hrsh7th/nvim-cmp",
-    name = "nvim-cmp",
-    event = "VeryLazy",
+    'saghen/blink.cmp',
+    lazy = false,
+    -- optional: provides snippets for the snippet source
+    dependencies = { 'rafamadriz/friendly-snippets' },
+
+    -- use a release tag to download pre-built binaries
+    version = '1.*',
+
     config = function()
-      require("config.nvim-cmp")
+      require("config.blink-cmp")
     end,
   },
-  -- {
-  --   "saghen/blink.cmp",
-  --   -- optional: provides snippets for the snippet source
-  --   dependencies = { "rafamadriz/friendly-snippets" },
-  --   -- use a release tag to download pre-built binaries
-  --   version = "1.*",
-  --   config = function()
-  --     require("config.blink-cmp")
-  --   end,
-  --   opts_extend = { "sources.default" },
-  -- },
   {
     "williamboman/mason.nvim",
     lazy = false,
@@ -78,7 +66,7 @@ local plugin_specs = {
       require("config.treesitter-textobjects")
     end,
   },
-  { "machakann/vim-swap", event = "VeryLazy" },
+  { "machakann/vim-swap",          event = "VeryLazy" },
 
   -- IDE for Lisp
   -- 'kovisoft/slimv'
@@ -104,21 +92,26 @@ local plugin_specs = {
 
   -- Fast fuzzy file finder with typo-resistant search
   {
-    "nvimtools/fff.nvim",
-    event = "VeryLazy",
-    opts = {
-      preview = {
-        enabled = true,
-        position = "right",
-        width = 0.5,
-      },
-      frecency = {
-        enabled = true,
-      },
-      git = {
-        enabled = true,
+    "dmtrKovalenko/fff.nvim",
+    build = 'cargo build --release',
+    -- or if you are using nixos
+    -- build = "nix run .#release",
+    opts = {                -- (optional)
+      debug = {
+        enabled = true,     -- we expect your collaboration at least during the beta
+        show_scores = true, -- to help us optimize the scoring system, feel free to share your scores!
       },
     },
+    -- No need to lazy-load with lazy.nvim.
+    -- This plugin initializes itself lazily.
+    lazy = false,
+    keys = {
+      {
+        "ff", -- try it if you didn't it is a banger keybinding for a picker
+        function() require('fff').find_files() end,
+        desc = 'FFFind files',
+      }
+    }
   },
 
   -- Show match number and index for searching
@@ -151,14 +144,14 @@ local plugin_specs = {
     ft = { "markdown" },
   },
   -- A list of colorscheme plugin you may want to try. Find what suits you.
-  { "navarasu/onedark.nvim", lazy = true },
-  { "sainnhe/edge", lazy = true },
-  { "sainnhe/sonokai", lazy = true },
-  { "sainnhe/gruvbox-material", lazy = true },
-  { "sainnhe/everforest", lazy = true },
-  { "EdenEast/nightfox.nvim", lazy = true },
-  { "catppuccin/nvim", name = "catppuccin", lazy = true },
-  { "olimorris/onedarkpro.nvim", lazy = true },
+  { "navarasu/onedark.nvim",       lazy = true },
+  { "sainnhe/edge",                lazy = true },
+  { "sainnhe/sonokai",             lazy = true },
+  { "sainnhe/gruvbox-material",    lazy = true },
+  { "sainnhe/everforest",          lazy = true },
+  { "EdenEast/nightfox.nvim",      lazy = true },
+  { "catppuccin/nvim",             name = "catppuccin", lazy = true },
+  { "olimorris/onedarkpro.nvim",   lazy = true },
   { "marko-cerovac/material.nvim", lazy = true },
   {
     "rockyzhang24/arctic.nvim",
@@ -166,17 +159,17 @@ local plugin_specs = {
     name = "arctic",
     branch = "v2",
   },
-  { "rebelot/kanagawa.nvim", lazy = true },
+  { "rebelot/kanagawa.nvim",        lazy = true },
   { "miikanissi/modus-themes.nvim", priority = 1000 },
-  { "wtfox/jellybeans.nvim", priority = 1000 },
-  { "projekt0n/github-nvim-theme", name = "github-theme" },
+  { "wtfox/jellybeans.nvim",        priority = 1000 },
+  { "projekt0n/github-nvim-theme",  name = "github-theme" },
   { "e-ink-colorscheme/e-ink.nvim", priority = 1000 },
-  { "ficcdaf/ashen.nvim", priority = 1000 },
-  { "savq/melange-nvim", priority = 1000 },
-  { "Skardyy/makurai-nvim", priority = 1000 },
-  { "vague2k/vague.nvim", priority = 1000 },
-  { "webhooked/kanso.nvim", priority = 1000 },
-  { "zootedb0t/citruszest.nvim", priority = 1000 },
+  { "ficcdaf/ashen.nvim",           priority = 1000 },
+  { "savq/melange-nvim",            priority = 1000 },
+  { "Skardyy/makurai-nvim",         priority = 1000 },
+  { "vague2k/vague.nvim",           priority = 1000 },
+  { "webhooked/kanso.nvim",         priority = 1000 },
+  { "zootedb0t/citruszest.nvim",    priority = 1000 },
 
   -- plugins to provide nerdfont icons
   {
@@ -247,7 +240,7 @@ local plugin_specs = {
     opts = {},
     init = function()
       vim.o.foldcolumn = "1" -- '0' is not bad
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
     end,
@@ -268,7 +261,7 @@ local plugin_specs = {
   --   end,
   -- },
 
-  { "nvim-lua/plenary.nvim", lazy = true },
+  { "nvim-lua/plenary.nvim",    lazy = true },
 
   -- For Windows and Mac, we can open an URL in the browser. For Linux, it may
   -- not be possible since we maybe in a server which disables GUI.
@@ -282,7 +275,7 @@ local plugin_specs = {
     enabled = function()
       return vim.g.is_win or vim.g.is_mac
     end,
-    config = true, -- default settings
+    config = true,      -- default settings
     submodules = false, -- not needed, submodules are required only for tests
   },
 
@@ -330,7 +323,7 @@ local plugin_specs = {
   -- 'mg979/vim-visual-multi'
 
   -- Show undo history visually
-  { "simnalamburt/vim-mundo", cmd = { "MundoToggle", "MundoShow" } },
+  { "simnalamburt/vim-mundo",    cmd = { "MundoToggle", "MundoShow" } },
 
   -- Manage your yank history
   {
@@ -342,10 +335,10 @@ local plugin_specs = {
   },
 
   -- Handy unix command inside Vim (Rename, Move etc.)
-  { "tpope/vim-eunuch", cmd = { "Rename", "Delete" } },
+  { "tpope/vim-eunuch",          cmd = { "Rename", "Delete" } },
 
   -- Repeat vim motions
-  { "tpope/vim-repeat", event = "VeryLazy" },
+  { "tpope/vim-repeat",          event = "VeryLazy" },
 
   { "nvim-zh/better-escape.vim", event = { "InsertEnter" } },
 
@@ -376,16 +369,16 @@ local plugin_specs = {
   {
     "NeogitOrg/neogit",
     dependencies = {
-      "nvim-lua/plenary.nvim", -- required
+      "nvim-lua/plenary.nvim",  -- required
       "sindrets/diffview.nvim", -- optional - Diff integration
       -- Only one of these is needed.
-      "ibhagwan/fzf-lua", -- optional
+      "ibhagwan/fzf-lua",       -- optional
     },
     event = "User InGitRepo",
   },
 
   -- Better git log display
-  { "rbong/vim-flog", cmd = { "Flog" } },
+  { "rbong/vim-flog",                   cmd = { "Flog" } },
   {
     "akinsho/git-conflict.nvim",
     version = "*",
@@ -426,11 +419,20 @@ local plugin_specs = {
     end,
   },
 
+  -- Enhanced hover support with multiple providers
+  {
+    "lewis6991/hover.nvim",
+    config = function()
+      require("config.hover-nvim")
+    end,
+    lazy = false,
+  },
+
   -- Faster footnote generation
   { "vim-pandoc/vim-markdownfootnotes", ft = { "markdown" } },
 
   -- Vim tabular plugin for manipulate tabular, required by markdown plugins
-  { "godlygeek/tabular", ft = { "markdown" } },
+  { "godlygeek/tabular",                ft = { "markdown" } },
 
   -- Markdown previewing (only for Mac and Windows)
   {
@@ -450,11 +452,11 @@ local plugin_specs = {
     ft = { "markdown" },
   },
 
-  { "chrisbra/unicode.vim", keys = { "ga" }, cmd = { "UnicodeSearch" } },
+  { "chrisbra/unicode.vim",   keys = { "ga" },   cmd = { "UnicodeSearch" } },
 
   -- Additional powerful text object for vim, this plugin should be studied
   -- carefully to use its full power
-  { "wellle/targets.vim", event = "VeryLazy" },
+  { "wellle/targets.vim",     event = "VeryLazy" },
 
   -- Plugin to manipulate character pairs quickly
   { "machakann/vim-sandwich", event = "VeryLazy" },
@@ -480,12 +482,12 @@ local plugin_specs = {
   },
 
   -- Modern matchit implementation
-  { "andymass/vim-matchup", event = "BufRead" },
-  { "tpope/vim-scriptease", cmd = { "Scriptnames", "Messages", "Verbose" } },
+  { "andymass/vim-matchup",     event = "BufRead" },
+  { "tpope/vim-scriptease",     cmd = { "Scriptnames", "Messages", "Verbose" } },
 
   -- Asynchronous command execution
-  { "skywind3000/asyncrun.vim", lazy = true, cmd = { "AsyncRun" } },
-  { "cespare/vim-toml", ft = { "toml" }, branch = "main" },
+  { "skywind3000/asyncrun.vim", lazy = true,                                   cmd = { "AsyncRun" } },
+  { "cespare/vim-toml",         ft = { "toml" },                               branch = "main" },
 
   -- Edit text area in browser using nvim
   {
@@ -521,7 +523,7 @@ local plugin_specs = {
   },
 
   -- Session management plugin
-  { "tpope/vim-obsession", cmd = "Obsession" },
+  { "tpope/vim-obsession",   cmd = "Obsession" },
 
   {
     "ojroques/vim-oscyank",
@@ -553,8 +555,8 @@ local plugin_specs = {
       dashboard = {
         enabled = true,
         sections = {
-          { section = "header", padding = 1 },
-          { section = "keys", padding = 1 },
+          { section = "header",  padding = 1 },
+          { section = "keys",    padding = 1 },
           { section = "startup", padding = 1 },
         },
         preset = {
@@ -633,7 +635,8 @@ local plugin_specs = {
         url_patterns = {
           ["dev.azure.com"] = {
             branch = "/branchCompare?baseVersion=GB{branch}&targetVersion=GBmaster&_a=commits",
-            file = "?path=/{file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=120",
+            file =
+            "?path=/{file}&version=GB{branch}&line={line_start}&lineEnd={line_end}&lineStartColumn=1&lineEndColumn=120",
             commit = "/commit/{commit}",
           },
         },
@@ -758,6 +761,16 @@ local plugin_specs = {
     ---@module "quicker"
     ---@type quicker.SetupOptions
     opts = {},
+  },
+
+  -- FFF.nvim - Fast fuzzy file finder
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = 'cargo build --release',
+    lazy = false,
+    config = function()
+      require("config.fff")
+    end,
   },
 }
 

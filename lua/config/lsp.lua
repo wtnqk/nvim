@@ -10,6 +10,7 @@ local ensure_installed = {
   "ruff",
   "intelephense",
   "volar",
+  "rust_analyzer",
 }
 
 -- Ensure servers are installed
@@ -38,10 +39,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     local bufnr = event_context.buf
 
-    -- Enable LSP-based auto-completion for Neovim 0.11+
-    vim.lsp.completion.enable(true, client.id, bufnr, {
-      autotrigger = true, -- Enable auto-completion
-    })
+    -- Disable built-in LSP completion since we're using blink.cmp
+    -- vim.lsp.completion.enable(true, client.id, bufnr, {
+    --   autotrigger = true, -- Enable auto-completion
+    -- })
 
     -- Mappings.
     local map = function(mode, l, r, opts)
@@ -91,14 +92,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       }
     end, { desc = "go to definition" })
     map("n", "<C-]>", vim.lsp.buf.definition)
-    map("n", "K", function()
-      vim.lsp.buf.hover {
-        border = "single",
-        max_height = 20,
-        max_width = 130,
-        close_events = { "CursorMoved", "BufLeave", "WinLeave", "LSPDetach" },
-      }
-    end)
+    -- K is now handled by hover.nvim for enhanced hover functionality
     map("n", "<C-k>", vim.lsp.buf.signature_help)
     map("n", "<space>rn", vim.lsp.buf.rename, { desc = "varialbe rename" })
     map("n", "<space>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
@@ -168,6 +162,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
   desc = "Configure buffer keymap and behavior based on LSP",
 })
 
+-- Disabled native LSP hover handler - using hover.nvim instead
+-- local borders = require("config.borders")
+-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+--   vim.lsp.handlers.hover,
+--   {
+--     border = borders.get("bold"),  -- Use bold border style
+--     focusable = true,
+--     max_width = 130,
+--     max_height = 20,
+--   }
+-- )
+
 -- Enable lsp servers when they are available
 
 local capabilities = require("config.lsp.utils").get_default_capabilities()
@@ -192,49 +198,70 @@ local servers = {
   "yamlls",
   "intelephense",
   "volar",
+  "rust_analyzer",
 }
 
 -- Configure individual LSP servers using Neovim 0.11 API
--- Load server-specific configurations from lua/config/lsp directory
 for _, server_name in ipairs(servers) do
+  -- Load our custom configuration
   local ok, server_config = pcall(require, "config.lsp." .. server_name)
   if ok then
-    -- Store the format_on_save setting before registering
+    -- Use vim.lsp.config() function to set configuration
     vim.lsp.config(server_name, server_config)
   else
-    vim.lsp.config(server_name, {})
+    -- Provide minimal config if no custom config exists
+    vim.lsp.config(server_name, {
+      cmd = { server_name },
+      filetypes = {},
+    })
   end
 end
 
 -- Enable all configured servers
+-- This should auto-start them when a matching filetype is opened
 vim.lsp.enable(servers)
 
--- Auto-start LSP servers for matching filetypes
+-- WORKAROUND: vim.lsp.enable() doesn't auto-start without proper root_dir setup
+-- We need to manually start servers until all configs have root_dir properly defined
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
   callback = function(args)
-    -- Get filetype and buffer
     local ft = vim.bo[args.buf].filetype
     local bufnr = args.buf
+    local fname = vim.api.nvim_buf_get_name(bufnr)
 
-    -- Check if any LSP clients are already attached
+    -- Skip if already has clients
     local clients = vim.lsp.get_clients({ bufnr = bufnr })
     if #clients > 0 then
       return
     end
 
-    -- Start appropriate LSP servers based on filetype
+    -- Try each configured server
     for _, server in ipairs(servers) do
       local config = vim.lsp.config[server]
-      if config and config.filetypes then
-        if vim.tbl_contains(config.filetypes, ft) then
-          vim.lsp.start(config, {
-            bufnr = bufnr,
-            name = server,
-          })
+      if config and config.filetypes and vim.tbl_contains(config.filetypes, ft) then
+        -- Determine root_dir
+        local root_dir = nil
+        if type(config.root_dir) == "function" then
+          root_dir = config.root_dir(fname)
+        elseif config.root_markers then
+          root_dir = vim.fs.root(fname, config.root_markers)
+        else
+          -- Default to current directory if no root_dir or root_markers
+          root_dir = vim.fn.getcwd()
         end
+
+        -- Start server with the determined root_dir
+        vim.lsp.start(vim.tbl_extend("force", config, {
+          root_dir = root_dir,
+        }), {
+          bufnr = bufnr,
+          name = server,
+        })
+        -- Only start one server per buffer
+        break
       end
     end
   end,
-  desc = "Auto-start LSP servers for matching filetypes",
+  desc = "Auto-start LSP servers (workaround for missing root_dir)",
 })

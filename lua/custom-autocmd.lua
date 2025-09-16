@@ -163,6 +163,9 @@ api.nvim_create_autocmd("ColorScheme", {
   pattern = "*",
   desc = "Define or overrride some highlight groups",
   callback = function()
+    -- For floating windows border highlight (set first for priority)
+    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "LightGreen", bg = "None", bold = true })
+
     -- For yank highlight
     vim.api.nvim_set_hl(0, "YankColor", { fg = "#34495E", bg = "#2ECC71", ctermfg = 59, ctermbg = 41 })
 
@@ -170,12 +173,21 @@ api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "Cursor", { fg = "black", bg = "#00c918", bold = true })
     vim.api.nvim_set_hl(0, "Cursor2", { fg = "red", bg = "red" })
 
-    -- For floating windows border highlight
-    vim.api.nvim_set_hl(0, "FloatBorder", { fg = "LightGreen", bg = "None", bold = true })
-
     local hl = vim.api.nvim_get_hl(0, { name = "NormalFloat" })
     -- change the background color of floating window to None, so it blenders better
     vim.api.nvim_set_hl(0, "NormalFloat", { fg = hl.fg, bg = "None" })
+
+    -- Disabled native LSP hover handler - using hover.nvim instead
+    -- local borders = require("config.borders")
+    -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+    --   vim.lsp.handlers.hover,
+    --   {
+    --     border = borders.get("bold"), -- Use bold border style
+    --     focusable = true,
+    --     max_width = 130,
+    --     max_height = 20,
+    --   }
+    -- )
 
     -- highlight for matching parentheses
     vim.api.nvim_set_hl(0, "MatchParen", { bold = true, underline = true })
