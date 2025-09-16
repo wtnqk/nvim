@@ -1,9 +1,12 @@
--- Intelephense (PHP) Language Server configuration
+-- intelephense configuration
 return {
+  name = "intelephense",
   cmd = { 'intelephense', '--stdio' },
   filetypes = { 'php' },
+  root_dir = function(filename)
+    return vim.fs.root(filename, { 'composer.json', '.git' })
+  end,
   format_on_save = false,  -- Disable format on save for PHP files
-  root_markers = { '.git', 'composer.json' },
   init_options = {
     -- License key for premium features (optional)
     -- Get your license from: https://intelephense.com/

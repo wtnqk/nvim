@@ -217,24 +217,14 @@ for _, server_name in ipairs(servers) do
   end
 end
 
--- Enable all configured servers
--- This should auto-start them when a matching filetype is opened
-vim.lsp.enable(servers)
-
--- WORKAROUND: vim.lsp.enable() doesn't auto-start without proper root_dir setup
--- We need to manually start servers until all configs have root_dir properly defined
+-- NOTE: vim.lsp.enable() causes duplicate servers with N/A root_dir
+-- We use FileType autocmd to start servers with proper root_dir instead
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
   callback = function(args)
     local ft = vim.bo[args.buf].filetype
     local bufnr = args.buf
     local fname = vim.api.nvim_buf_get_name(bufnr)
-
-    -- Skip if already has clients
-    local clients = vim.lsp.get_clients({ bufnr = bufnr })
-    if #clients > 0 then
-      return
-    end
 
     -- Try each configured server
     for _, server in ipairs(servers) do
@@ -251,14 +241,18 @@ vim.api.nvim_create_autocmd("FileType", {
           root_dir = vim.fn.getcwd()
         end
 
-        -- Start server with the determined root_dir
+        -- vim.lsp.start will automatically reuse existing clients with the same config
         vim.lsp.start(vim.tbl_extend("force", config, {
           root_dir = root_dir,
+          name = server,
         }), {
           bufnr = bufnr,
-          name = server,
+          reuse_client = function(client, conf)
+            -- Reuse client if it has the same name and root_dir
+            return client.name == conf.name and client.config.root_dir == conf.root_dir
+          end,
         })
-        -- Only start one server per buffer
+        -- Only process one server per buffer
         break
       end
     end
