@@ -1,3 +1,4 @@
+-- nvim-treesitter-textobjects configuration
 require("nvim-treesitter.configs").setup {
   textobjects = {
     select = {

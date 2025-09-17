@@ -365,12 +365,40 @@ vim.api.nvim_create_autocmd("User", {
     end, { desc = "LSP Restart" })
     keymap.set("n", "<leader>lh", "<cmd>checkhealth lsp<cr>", { desc = "LSP Health" })
 
-    -- Diagnostic navigation keymaps
+    -- Diagnostic keymaps (matching Trouble's pattern)
+    keymap.set("n", "<leader>xx", function()
+      vim.diagnostic.setloclist()
+    end, { desc = "Diagnostics (Location List)" })
+
+    keymap.set("n", "<leader>xX", function()
+      vim.diagnostic.setloclist({ open = true })
+    end, { desc = "Buffer Diagnostics (Location List)" })
+
+    keymap.set("n", "<leader>xL", "<cmd>lopen<cr>", { desc = "Location List" })
+    keymap.set("n", "<leader>xQ", "<cmd>copen<cr>", { desc = "Quickfix List" })
+
+    -- Todo comments (using quickfix instead of Trouble)
+    keymap.set("n", "<leader>xt", "<cmd>TodoQuickFix<cr>", { desc = "Todo (QuickFix)" })
+    keymap.set("n", "<leader>xT", "<cmd>TodoQuickFix keywords=TODO,FIX,FIXME<cr>", { desc = "Todo/Fix/Fixme (QuickFix)" })
+
+    -- Diagnostic navigation
     keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic" })
     keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic" })
-    -- Diagnostic hover is handled by hover.nvim with K/S-K
 
-    keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Add diagnostics to location list" })
+    -- Quickfix/Location list navigation (matching Trouble's [q/]q pattern)
+    keymap.set("n", "[q", function()
+      local ok, err = pcall(vim.cmd.cprev)
+      if not ok then
+        vim.notify(err, vim.log.levels.ERROR)
+      end
+    end, { desc = "Previous Quickfix Item" })
+
+    keymap.set("n", "]q", function()
+      local ok, err = pcall(vim.cmd.cnext)
+      if not ok then
+        vim.notify(err, vim.log.levels.ERROR)
+      end
+    end, { desc = "Next Quickfix Item" })
 
     -- Explorer (README.org Explorer/Files section)
     keymap.set("n", "<leader>e", function()
@@ -548,5 +576,14 @@ vim.api.nvim_create_autocmd("User", {
         snacks.picker.lsp_type_definitions()
       end
     end, { desc = "LSP type definitions" })
+
+    -- LSP symbols (Trouble-compatible keybindings)
+    keymap.set("n", "<leader>cs", function()
+      snacks.picker.lsp_symbols()
+    end, { desc = "Symbols (Document)" })
+
+    keymap.set("n", "<leader>cS", function()
+      snacks.picker.lsp_references()
+    end, { desc = "LSP references" })
   end,
 })
