@@ -52,7 +52,7 @@ local plugin_specs = {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    lazy = true,
+    event = "VeryLazy",
     build = ":TSUpdate",
     config = function()
       require("config.treesitter")
@@ -542,14 +542,64 @@ local plugin_specs = {
     end,
   },
   {
+    "folke/flash.nvim",
+    lazy = true,  -- Only loaded when needed by Snacks picker
+    opts = {},
+  },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "]t", function() require("todo-comments").jump_next() end, desc = "Next Todo Comment" },
+      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous Todo Comment" },
+      { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
+      { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+    },
+  },
+  {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    dependencies = { "folke/flash.nvim" },
     ---@type snacks.Config
     opts = {
       -- Core features
       bigfile = { enabled = true },
       quickfile = { enabled = true },
+
+      -- Picker configuration with flash integration
+      picker = {
+        win = {
+          input = {
+            keys = {
+              ["<a-s>"] = { "flash", mode = { "n", "i" } },
+              ["s"] = { "flash" },
+            },
+          },
+        },
+        actions = {
+          flash = function(picker)
+            require("flash").jump({
+              pattern = "^",
+              label = { after = { 0, 0 } },
+              search = {
+                mode = "search",
+                exclude = {
+                  function(win)
+                    return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list"
+                  end,
+                },
+              },
+              action = function(match)
+                local idx = picker.list:row2idx(match.pos[1])
+                picker.list:_move(idx, true, true)
+              end,
+            })
+          end,
+        },
+      },
 
       -- UI replacements
       dashboard = {
