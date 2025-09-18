@@ -177,7 +177,7 @@ api.nvim_create_autocmd("ColorScheme", {
     -- change the background color of floating window to None, so it blenders better
     vim.api.nvim_set_hl(0, "NormalFloat", { fg = hl.fg, bg = "None" })
 
-    -- Disabled native LSP hover handler - using hover.nvim instead
+    -- Disabled native LSP hover handler - using lspsaga instead
     -- local borders = require("config.borders")
     -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     --   vim.lsp.handlers.hover,

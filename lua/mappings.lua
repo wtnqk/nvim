@@ -437,38 +437,7 @@ vim.api.nvim_create_autocmd("User", {
       snacks.rename.rename_file()
     end, { desc = "Rename file" })
 
-    -- Terminal (README.org Terminal section)
-    -- Floating terminal (just toggle, uses count for multiple terminals)
-    keymap.set({ "n", "t" }, "<C-\\>", function()
-      snacks.terminal.toggle(vim.o.shell, { win = { position = "float" } })
-    end, { desc = "Terminal (float)" })
-
-    -- Normal terminal in split (can create new with leader-tn)
-    keymap.set({ "n", "t" }, "<C-/>", function()
-      snacks.terminal.toggle()
-    end, { desc = "Toggle terminal" })
-    keymap.set({ "n", "t" }, "<C-_>", function()
-      snacks.terminal.toggle()
-    end, { desc = "which_key_ignore" })
-
-    -- Create new terminal in split
-    keymap.set("n", "<leader>tn", function()
-      snacks.terminal.open()
-    end, { desc = "New terminal (split)" })
-
-    -- Terminal list
-    keymap.set("n", "<leader>tl", function()
-      local terminals = snacks.terminal.list()
-      if #terminals == 0 then
-        vim.notify("No active terminals", vim.log.levels.INFO)
-      else
-        local info = "Active Terminals:\n"
-        for i, term in ipairs(terminals) do
-          info = info .. string.format("%d. Terminal %d\n", i, term.id or i)
-        end
-        vim.notify(info, vim.log.levels.INFO)
-      end
-    end, { desc = "List terminals" })
+    -- Terminal keymappings are now handled by toggleterm.nvim in config/toggleterm.lua
 
     -- Zen mode
     keymap.set("n", "<leader>z", function()
@@ -480,37 +449,8 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
--- Hover.nvim keymaps (separate autocmd to prevent failure cascade)
-vim.api.nvim_create_autocmd("User", {
-  pattern = "VeryLazy",
-  callback = function()
-    local hover_ok, hover = pcall(require, "hover")
-    if hover_ok then
-      -- K to open hover or enter if already open
-      keymap.set("n", "K", function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        local hover_win = vim.b[bufnr].hover_preview
-        if hover_win and vim.api.nvim_win_is_valid(hover_win) then
-          -- Hover is already open, enter it
-          hover.enter()
-        else
-          -- Hover is not open, open it
-          hover.open()
-        end
-      end, { desc = "hover.nvim (open/enter)" })
 
-      -- Tab/S-Tab for hover source switching
-      keymap.set("n", "<Tab>", function()
-        hover.switch("next")
-      end, { desc = "Next hover source" })
-      keymap.set("n", "<S-Tab>", function()
-        hover.switch("previous")
-      end, { desc = "Previous hover source" })
-    end
-  end,
-})
-
--- Override gd, gr, gI globally to handle hover windows
+-- Override gd, gr, gI globally
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
   callback = function()
@@ -524,7 +464,7 @@ vim.api.nvim_create_autocmd("User", {
       local winid = vim.api.nvim_get_current_win()
       local win_config = vim.api.nvim_win_get_config(winid)
 
-      -- If we're in a floating window (hover), close it first
+      -- If we're in a floating window, close it first
       if win_config.relative ~= "" then
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
         vim.schedule(function()

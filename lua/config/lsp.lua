@@ -53,11 +53,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     -- Navigation keymaps are defined globally in mappings.lua using Snacks picker
-    -- K for hover is defined here since it's buffer-local
-    map("n", "K", vim.lsp.buf.hover, { desc = "LSP hover" })
-    map("n", "<C-k>", vim.lsp.buf.signature_help)
-    map("n", "<space>rn", vim.lsp.buf.rename, { desc = "varialbe rename" })
-    map("n", "<space>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
+    -- Lspsaga keymaps
+    map("n", "K", "<cmd>Lspsaga hover_doc<CR>", { desc = "LSP hover (Lspsaga)" })
+    map("n", "<C-k>", "<cmd>Lspsaga signature_help<CR>", { desc = "Signature help (Lspsaga)" })
+    map("n", "<space>rn", "<cmd>Lspsaga rename<CR>", { desc = "Rename (Lspsaga)" })
+    map("n", "<space>ca", "<cmd>Lspsaga code_action<CR>", { desc = "Code action (Lspsaga)" })
+    map("n", "gd", "<cmd>Lspsaga goto_definition<CR>", { desc = "Go to definition (Lspsaga)" })
+    map("n", "gD", "<cmd>Lspsaga peek_definition<CR>", { desc = "Peek definition (Lspsaga)" })
+    map("n", "gr", "<cmd>Lspsaga finder<CR>", { desc = "LSP finder (Lspsaga)" })
+    map("n", "go", "<cmd>Lspsaga outline<CR>", { desc = "Outline (Lspsaga)" })
+    map("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", { desc = "Previous diagnostic (Lspsaga)" })
+    map("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", { desc = "Next diagnostic (Lspsaga)" })
+    map("n", "<space>sl", "<cmd>Lspsaga show_line_diagnostics<CR>", { desc = "Line diagnostics (Lspsaga)" })
+    map("n", "<space>sb", "<cmd>Lspsaga show_buf_diagnostics<CR>", { desc = "Buffer diagnostics (Lspsaga)" })
     map({ "n", "v" }, "<space>f", function()
       vim.lsp.buf.format({ async = false, timeout_ms = 2000 })
     end, { desc = "Format code" })
@@ -124,7 +132,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   desc = "Configure buffer keymap and behavior based on LSP",
 })
 
--- Disabled native LSP hover handler - using hover.nvim instead
+-- Native LSP hover handler configuration (disabled - using lspsaga instead)
 -- local borders = require("config.borders")
 -- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 --   vim.lsp.handlers.hover,

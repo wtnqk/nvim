@@ -51,6 +51,25 @@ local plugin_specs = {
     event = "VeryLazy",
   },
   {
+    "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
+    config = function()
+      require("lspsaga").setup({
+        ui = {
+          code_action = "💡",
+          enable = true,
+          border = "rounded",
+        },
+        lightbulb = {
+          enable = false,  -- Disable since we use nvim-lightbulb
+        },
+        symbol_in_winbar = {
+          enable = false,  -- Disable since we use dropbar.nvim
+        },
+      })
+    end,
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     event = "VeryLazy",
     build = ":TSUpdate",
@@ -419,14 +438,6 @@ local plugin_specs = {
     end,
   },
 
-  -- Enhanced hover support with multiple providers
-  {
-    "lewis6991/hover.nvim",
-    config = function()
-      require("config.hover-nvim")
-    end,
-    lazy = false,
-  },
 
   -- Faster footnote generation
   { "vim-pandoc/vim-markdownfootnotes", ft = { "markdown" } },
@@ -705,8 +716,8 @@ local plugin_specs = {
       words = { enabled = true },
       scroll = { enabled = true },
 
-      -- Terminal
-      terminal = { enabled = true },
+      -- Terminal (disabled - using toggleterm instead)
+      terminal = { enabled = false },
 
       -- Productivity
       scratch = { enabled = true },
@@ -785,6 +796,20 @@ local plugin_specs = {
     config = function()
       require("config.live-command")
     end,
+  },
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = function()
+      require("config.toggleterm")
+    end,
+    keys = {
+      { "<C-\\>", desc = "Terminal (float)" },
+      { "<C-/>", desc = "Toggle terminal" },
+      { "<C-_>", desc = "Toggle terminal" },
+      { "<leader>tn", desc = "New terminal" },
+      { "<leader>tl", desc = "List terminals" },
+    },
   },
   {
     -- show hint for code actions, the user can also implement code actions themselves,

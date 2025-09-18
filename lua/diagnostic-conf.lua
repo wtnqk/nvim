@@ -48,7 +48,7 @@ vim.keymap.set("n", "<space>qb", function()
   set_qflist(0)
 end, { desc = "put buffer diagnostics to qf" })
 
--- Disabled automatic diagnostic hover - using hover.nvim instead
+-- Disabled automatic diagnostic hover - using lspsaga instead
 -- api.nvim_create_autocmd("CursorHold", {
 --   pattern = "*",
 --   callback = function()
