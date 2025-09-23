@@ -38,9 +38,77 @@ local plugin_specs = {
   {
     "williamboman/mason.nvim",
     lazy = false,
+    priority = 100,  -- Higher priority to load first
     config = function()
-      require("mason").setup()
-      require("config.lsp")
+      require("mason").setup({
+        ui = {
+          border = "rounded",
+          icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗"
+          }
+        }
+      })
+      -- Delay LSP config to avoid conflicts
+      vim.defer_fn(function()
+        require("config.lsp")
+      end, 100)
+    end,
+  },
+  -- DAP (Debug Adapter Protocol) support
+  {
+    "mfussenegger/nvim-dap",
+    event = "VeryLazy",
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "nvim-neotest/nvim-nio",
+      "theHamsta/nvim-dap-virtual-text",
+      "jay-babu/mason-nvim-dap.nvim",
+    },
+    config = function()
+      require("config.dap")
+    end,
+  },
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "williamboman/mason.nvim", "mfussenegger/nvim-dap" },
+    opts = {
+      ensure_installed = {
+        "python",          -- debugpy
+        "js",              -- js-debug-adapter (newer alternative)
+        "codelldb",        -- for Rust, C/C++
+        "delve",           -- for Go
+        "php",             -- php-debug-adapter
+        "bash",            -- bash-debug-adapter
+        "javadbg",         -- java-debug-adapter
+        "javatest",        -- java-test
+      },
+      automatic_installation = true,
+      handlers = {},
+    },
+  },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    lazy = true,
+    config = function()
+      require("nvim-dap-virtual-text").setup({
+        enabled = true,
+        enabled_commands = true,
+        highlight_changed_variables = true,
+        highlight_new_as_changed = true,
+        show_stop_reason = true,
+        commented = false,
+        only_first_definition = false,
+        all_references = false,
+        filter_references_pattern = '<module',
+        virt_text_pos = 'eol',
+        all_frames = false,
+        virt_lines = false,
+        virt_text_win_col = nil,
+      })
     end,
   },
   {

@@ -9,8 +9,8 @@ local ensure_installed = {
   "vim-language-server",
   "ruff",
   "intelephense",
-  "volar",
-  "rust_analyzer",
+  "vue-language-server",  -- Changed from "volar"
+  "rust-analyzer",  -- Changed from "rust_analyzer"
 }
 
 -- Ensure servers are installed

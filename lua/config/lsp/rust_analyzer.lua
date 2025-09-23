@@ -14,7 +14,8 @@ return {
         loadOutDirsFromCheck = true,
         runBuildScripts = true,
       },
-      checkOnSave = {
+      checkOnSave = true,
+      check = {
         command = "clippy",
         extraArgs = { "--no-deps" },
       },
