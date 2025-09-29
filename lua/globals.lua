@@ -27,7 +27,7 @@ vim.g.maplocalleader = "\\"
 vim.g.vimsyn_embed = "l"
 
 -- Use English as main language
-vim.cmd([[language en_US.UTF-8]])
+-- vim.cmd([[language en_US.UTF-8]])
 
 -- Disable loading certain plugins
 

@@ -36,6 +36,6 @@ require("diagnostic-conf")
 -- colorscheme settings
 local color_scheme = require("colorschemes")
 
-vim.cmd("colorscheme kanagawa")
+vim.cmd("colorscheme everforest")
 -- Load a random colorscheme
 -- color_scheme.rand_colorscheme()

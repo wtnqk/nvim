@@ -9,8 +9,8 @@ local ensure_installed = {
   "vim-language-server",
   "ruff",
   "intelephense",
-  "vue-language-server",  -- Changed from "volar"
-  "rust-analyzer",  -- Changed from "rust_analyzer"
+  "vuels",
+  "rust_analyzer",
 }
 
 -- Ensure servers are installed
@@ -38,6 +38,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     local bufnr = event_context.buf
+
+    -- Handle on_attach from server config
+    local server_config = vim.lsp.config[client.name]
+    if server_config and server_config.on_attach then
+      server_config.on_attach(client, bufnr)
+    end
 
     -- Disable built-in LSP completion since we're using blink.cmp
     -- vim.lsp.completion.enable(true, client.id, bufnr, {
@@ -167,7 +173,7 @@ local servers = {
   "bashls",
   "yamlls",
   "intelephense",
-  "volar",
+  "vuels",
   "rust_analyzer",
 }
 

@@ -399,10 +399,21 @@ local plugin_specs = {
 
   -- Comment plugin
   {
-    "tpope/vim-commentary",
-    keys = {
-      { "gc", mode = "n" },
-      { "gc", mode = "v" },
+    "numToStr/Comment.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
+    config = function()
+      require("config.comment")
+    end,
+  },
+  -- Context-aware commentstring for embedded languages (Vue, JSX, etc.)
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    lazy = true,
+    opts = {
+      enable_autocmd = false,
     },
   },
 
