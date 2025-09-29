@@ -1,7 +1,7 @@
 -- rust_analyzer configuration
 return {
   name = "rust_analyzer",
-  cmd = { "rust-analyzer" },
+  cmd = { vim.fn.expand("~/.cargo/bin/rust-analyzer") },
   filetypes = { "rust" },
   root_dir = function(filename)
     return vim.fs.root(filename, { "Cargo.toml", "rust-project.json" })
