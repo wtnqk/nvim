@@ -9,8 +9,8 @@ return {
       },
     },
     keys = {
-      { "<leader>dgt", function() require("dap-go").debug_test() end,        ft = "go", desc = "Debug Go Test" },
-      { "<leader>dgl", function() require("dap-go").debug_last_test() end,   ft = "go", desc = "Debug Last Go Test" },
+      { "<leader>dtt", function() require("dap-go").debug_test() end,      ft = "go", desc = "Debug Test" },
+      { "<leader>dtl", function() require("dap-go").debug_last_test() end, ft = "go", desc = "Debug Last Test" },
     },
   },
 }

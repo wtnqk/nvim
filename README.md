@@ -130,10 +130,9 @@
 | `<leader>dt` | Terminate |
 | `<leader>du` | Toggle UI |
 | `<leader>dw` | Add Watch |
-| `<leader>dgt` | Debug Go Test |
-| `<leader>dgl` | Debug Last Go Test |
-| `<leader>dpt` | Debug Python Test Method |
-| `<leader>dpc` | Debug Python Test Class |
+| `<leader>dtt` | Debug Test (filetype-aware) |
+| `<leader>dtl` | Debug Last Test (Go) |
+| `<leader>dtc` | Debug Test Class (Python) |
 
 ### Grapple `<leader>h`
 
@@ -214,6 +213,15 @@
 | `g<C-a>` / `g<C-x>` | n/v | Increment / Decrement sequential |
 | `p` / `P` | n | Put after / before (yanky) |
 | `<C-p>` / `<C-n>` | n | Cycle yank history |
+
+### Surround (nvim-surround)
+
+| Key | Mode | Description |
+|-----|------|-------------|
+| `ys{motion}{char}` | n | Add surround (e.g. `ysiw"`) |
+| `cs{old}{new}` | n | Change surround (e.g. `cs"'`) |
+| `ds{char}` | n | Delete surround (e.g. `ds"`) |
+| `S{char}` | v | Surround selection |
 
 ### Oil (inside oil buffer)
 

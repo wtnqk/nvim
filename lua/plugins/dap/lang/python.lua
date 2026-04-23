@@ -7,8 +7,8 @@ return {
       require("dap-python").setup("python")
     end,
     keys = {
-      { "<leader>dpt", function() require("dap-python").test_method() end, ft = "python", desc = "Debug Python Test Method" },
-      { "<leader>dpc", function() require("dap-python").test_class() end,  ft = "python", desc = "Debug Python Test Class" },
+      { "<leader>dtt", function() require("dap-python").test_method() end, ft = "python", desc = "Debug Test" },
+      { "<leader>dtc", function() require("dap-python").test_class() end,  ft = "python", desc = "Debug Test Class" },
     },
   },
 }
