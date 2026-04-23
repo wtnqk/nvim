@@ -1,0 +1,31 @@
+return {
+  {
+    "saghen/blink.cmp",
+    lazy = false,
+    version = "1.*",
+    dependencies = {
+      -- multi-language aggregation (already sources from official extensions)
+      "rafamadriz/friendly-snippets",
+      -- official VS Code extension snippets
+      { "golang/vscode-go",              build = false },
+      { "hashicorp/vscode-terraform",    build = false },
+      { "ziglang/vscode-zig",            build = false },
+      { "elixir-lsp/vscode-elixir-ls",  build = false },
+      { "fwcd/vscode-kotlin",            build = false },
+      { "ocamllabs/vscode-ocaml-platform",          build = false },
+      { "dsznajder/vscode-react-javascript-snippets", build = false },
+      { "honojs/vscode",                              build = false },
+    },
+    opts = {
+      keymap = { preset = "default" },
+      appearance = {
+        nerd_font_variant = "mono",
+      },
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+      },
+      signature = { enabled = true },
+      fuzzy = { implementation = "prefer_rust_with_warning" },
+    },
+  },
+}
