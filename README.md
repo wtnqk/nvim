@@ -180,11 +180,21 @@
 | `<leader>uZ` | Zoom Window |
 | `<leader>uD` | Toggle Dim |
 
+### Scratch `<leader>.`
+
+| Key | Description |
+|-----|-------------|
+| `<leader>.` | Scratch Buffer (current ft) |
+| `<leader>>` | Scratch Select |
+| `<C-f>` | Change Filetype (inside scratch) |
+
 ### Terminal `<leader>t`
 
 | Key | Description |
 |-----|-------------|
-| `<leader>tt` | Terminal |
+| `<leader>tt` | Terminal (Float) |
+| `<leader>ts` | Terminal (Split) |
+| `<leader>tT` | Terminal (Buffer) |
 
 ### Notifications `<leader>n`
 
@@ -213,6 +223,18 @@
 | `g<C-a>` / `g<C-x>` | n/v | Increment / Decrement sequential |
 | `p` / `P` | n | Put after / before (yanky) |
 | `<C-p>` / `<C-n>` | n | Cycle yank history |
+
+### Text Objects (mini.ai)
+
+| Text Object | 説明 |
+|-------------|------|
+| `aa` / `ia` | 引数 (argument) |
+| `af` / `if` | 関数呼び出し (function call) |
+| `ab` / `ib` | ブラケット全般 `()[]{}` |
+| `aq` / `iq` | クォート全般 `"'\`` |
+| `at` / `it` | タグ `<tag>` |
+
+例: `daa`（引数削除）、`cif`（関数の中身を変更）
 
 ### Surround (nvim-surround)
 
@@ -281,22 +303,19 @@ python = "3.12"
 go install golang.org/x/tools/gopls@latest
 go install github.com/sqls-server/sqls@latest
 
-# Node
-npm install -g typescript-language-server typescript
-npm install -g vscode-langservers-extracted       # jsonls
-npm install -g yaml-language-server               # yamlls
-npm install -g dockerfile-language-server-nodejs  # dockerls
-npm install -g @tailwindcss/language-server
-npm install -g @ansible/ansible-language-server
-npm install -g @elm-tooling/elm-language-server
-npm install -g @github/copilot-language-server
-
-# Python
-pip install pyright
+# bun (Node系 LSP — npm の代わりに bun を使用)
+bun add -g typescript-language-server typescript   # TypeScript/JavaScript
+bun add -g vscode-langservers-extracted            # jsonls
+bun add -g yaml-language-server                    # yamlls
+bun add -g dockerfile-language-server-nodejs       # dockerls
+bun add -g @tailwindcss/language-server
+bun add -g @ansible/ansible-language-server
+bun add -g @elm-tooling/elm-language-server
+bun add -g @github/copilot-language-server
+bun add -g pyright                                 # Python
 
 # Rust (rustup)
 rustup component add rust-analyzer  # rustaceanvim が自動管理
-cargo install tinymist              # Typst
 ```
 
 ---
@@ -307,32 +326,32 @@ cargo install tinymist              # Typst
 
 ```sh
 brew install lua-language-server
-brew install llvm                          # clangd (C/C++)
-brew install marksman                      # Markdown
-brew install hashicorp/tap/terraform-ls   # Terraform
-brew install erlang-ls                     # Erlang
-brew install clojure-lsp/brew/clojure-lsp  # Clojure
-brew install kotlin-language-server        # Kotlin
-brew install taplo                         # TOML
-brew install gleam                         # Gleam (gleam lsp を内包)
+brew install llvm                              # clangd (C/C++)
+brew install marksman                          # Markdown
+brew install hashicorp/tap/terraform-ls        # Terraform
+brew install erlang_ls                         # Erlang
+brew install clojure-lsp/brew/clojure-lsp-native  # Clojure
+brew install kotlin-language-server            # Kotlin
+brew install taplo                             # TOML
+brew install gleam                             # Gleam (gleam lsp を内包)
+brew install elixir-ls                         # Elixir
+brew install tinymist                          # Typst
 ```
 
 ---
 
 ### 手動インストール
 
-mise/brew未対応のため、GitHubリリースページから取得。
-
 | 言語 | サーバー | 入手先 |
 |------|----------|--------|
-| Elixir | elixir-ls | https://github.com/elixir-lsp/elixir-ls/releases |
-| Zig | zls | https://github.com/zigtools/zls/releases |
+| Zig | zls | `brew install zls` または https://github.com/zigtools/zls/releases |
 
 ---
 
 ### OCaml
 
 ```sh
+# opam が必要
 opam install ocaml-lsp-server
 ```
 
@@ -347,7 +366,7 @@ opam install ocaml-lsp-server
 | JS/TS | vscode-js-debug | lazy.nvimのbuildステップで自動ビルド |
 | C/C++ | codelldb | `brew install codelldb` |
 | Rust | codelldb | rustaceanvimが自動管理（codelldb要インストール） |
-| Elixir | elixir-ls-debugger | elixir-lsに同梱（手動インストール参照） |
+| Elixir | elixir-ls-debugger | elixir-lsに同梱（`brew install elixir-ls`） |
 | Kotlin | kotlin-debug-adapter | https://github.com/fwcd/kotlin-debug-adapter/releases |
 | Zig | codelldb | C/C++と共用 |
 | OCaml | ocamlearlybird | `opam install earlybird` |

@@ -17,7 +17,11 @@ return {
       { "honojs/vscode",                              build = false },
     },
     opts = {
-      keymap = { preset = "default" },
+      keymap = { preset = "default", ["<CR>"] = { "accept", "fallback" } },
+      completion = {
+        list = { selection = { preselect = true } },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
+      },
       appearance = {
         nerd_font_variant = "mono",
       },

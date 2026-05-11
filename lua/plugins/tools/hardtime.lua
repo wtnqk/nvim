@@ -11,7 +11,8 @@ return {
       -- hints only, no blocking
       restriction_mode = "hint",
       max_time = 1000,
-      max_count = 1,
+      max_count = 2,
+      disabled_keys = {},
     },
   },
 }
