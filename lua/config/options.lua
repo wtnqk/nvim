@@ -1,6 +1,16 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = "●",
+    spacing = 2,
+    source = "if_many",
+  },
+  signs = true,
+  underline = true,
+})
+
 local opt = vim.opt
 
 opt.number = true
@@ -30,3 +40,4 @@ opt.timeoutlen = 300
 opt.completeopt = "menu,menuone,noselect"
 opt.pumheight = 10
 opt.laststatus = 3
+

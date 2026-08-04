@@ -2,7 +2,7 @@ local function detect_ts_formatter(bufnr)
   local path = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
   if vim.fs.find({ "biome.json", "biome.jsonc" }, { upward = true, path = path })[1] then
     return { "biome" }
-  elseif vim.fs.find({ "oxfmtrc.jsonc" }, { upward = true, path = path })[1] then
+  elseif vim.fs.find({ ".oxfmtrc.jsonc", ".oxfmtrc.json" }, { upward = true, path = path })[1] then
     return { "oxfmt" }
   elseif vim.fs.find({ ".prettierrc", ".prettierrc.js", ".prettierrc.json", ".prettierrc.yaml", ".prettierrc.yml", "prettier.config.js", "prettier.config.cjs" }, { upward = true, path = path })[1] then
     return { "prettier" }
@@ -29,7 +29,7 @@ return {
     cmd = "ConformInfo",
     opts = {
       formatters_by_ft = {
-        lua        = { "stylua" },
+        lua        = { "emmylua" },
         go         = { "gofmt", "goimports" },
         rust       = { "rustfmt" },
         python     = { "black" },
