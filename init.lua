@@ -1,5 +1,6 @@
 require("config.options")
 require("config.keymaps")
+require("config.quickfix")
 require("config.compat")
 require("config.lazy")
 require("config.lsp")

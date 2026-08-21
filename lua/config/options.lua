@@ -1,5 +1,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 vim.diagnostic.config({
   virtual_text = {
@@ -40,4 +42,3 @@ opt.timeoutlen = 300
 opt.completeopt = "menu,menuone,noselect"
 opt.pumheight = 10
 opt.laststatus = 3
-

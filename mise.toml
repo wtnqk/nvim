@@ -1,2 +1,4 @@
 [tools]
+"pipx:ty" = { version = "latest", uvx = true }
+"pipx:ruff" = { version = "latest", uvx = true }
 "aqua:LuaLS/lua-language-server" = "latest"
