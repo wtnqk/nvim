@@ -39,9 +39,10 @@ return {
         jsx        = detect_ts_formatter,
         vue        = detect_vue_svelte_formatter,
         svelte     = detect_vue_svelte_formatter,
-        json       = { "prettier" },
-        yaml       = { "prettier" },
-        markdown   = { "prettier" },
+        json       = { "oxfmt" },
+        yaml       = { "oxfmt" },
+        markdown   = { "oxfmt" },
+        ["markdown.mdx"] = { "oxfmt" },
         elm        = { "elm_format" },
       },
       format_on_save = function(bufnr)

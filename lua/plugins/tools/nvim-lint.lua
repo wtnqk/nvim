@@ -36,6 +36,8 @@ return {
             linters = detect_ts_linter(args.buf)
           elseif vim.tbl_contains(vue_svelte_fts, ft) then
             linters = detect_vue_svelte_linter(args.buf)
+          elseif ft == "markdown" or ft == "markdown.mdx" then
+            linters = { "markdownlint" }
           end
           if #linters > 0 then
             lint.try_lint(linters)
